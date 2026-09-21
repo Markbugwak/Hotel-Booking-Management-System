@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL+ | Booking Confirmed</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+</head>
+<body>
+
+  <header id="navbar" class="navbar is-scrolled is-visible" role="banner">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo"><span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span></a>
+    </div>
+  </header>
+
+  <main class="confirm-page">
+    <div class="confirm-page__inner">
+
+      <!-- Checkmark Animation -->
+      <div class="confirm-page__check">
+        <svg viewBox="0 0 100 100" class="confirm-page__check-svg">
+          <circle cx="50" cy="50" r="45" class="confirm-page__check-circle" />
+          <polyline points="30,52 45,67 72,35" class="confirm-page__check-mark" />
+        </svg>
+      </div>
+
+      <span class="confirm-page__number">CONFIRMATION</span>
+      <h1 class="confirm-page__title">YOUR STAY<br />IS CONFIRMED<span class="confirm-page__dot">.</span></h1>
+      <p class="confirm-page__subtitle">A confirmation has been sent to your email. We look forward to welcoming you to Cebu City.</p>
+
+      <!-- Booking Details -->
+      <div class="confirm-page__details" id="confirmDetails">
+        <div class="confirm-page__detail-row">
+          <span class="confirm-page__detail-label">BOOKING ID</span>
+          <span class="confirm-page__detail-value" id="confId">—</span>
+        </div>
+        <div class="confirm-page__detail-row">
+          <span class="confirm-page__detail-label">GUEST</span>
+          <span class="confirm-page__detail-value" id="confName">—</span>
+        </div>
+        <div class="confirm-page__detail-row">
+          <span class="confirm-page__detail-label">ROOM</span>
+          <span class="confirm-page__detail-value" id="confRoom">—</span>
+        </div>
+        <div class="confirm-page__detail-row">
+          <span class="confirm-page__detail-label">CHECK-IN</span>
+          <span class="confirm-page__detail-value" id="confCheckIn">—</span>
+        </div>
+        <div class="confirm-page__detail-row">
+          <span class="confirm-page__detail-label">CHECK-OUT</span>
+          <span class="confirm-page__detail-value" id="confCheckOut">—</span>
+        </div>
+        <div class="confirm-page__detail-row">
+          <span class="confirm-page__detail-label">TOTAL</span>
+          <span class="confirm-page__detail-value confirm-page__detail-value--accent" id="confTotal">—</span>
+        </div>
+      </div>
+
+      <div class="confirm-page__ctas">
+        <a href="../index.html" class="btn btn--primary" data-cursor="cta">
+          <span class="btn__text">BACK TO HOME</span>
+          <span class="btn__arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href="rooms.html" class="btn btn--outline">
+          <span class="btn__text">VIEW ROOMS</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../js/booking.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Load booking data
+      var params = new URLSearchParams(window.location.search);
+      var bookingId = params.get('id');
+
+      if (bookingId && window.Booking) {
+        var booking = window.Booking.getBookingById(bookingId);
+        if (booking) {
+          var roomNames = { standard: 'Standard', deluxe: 'Deluxe', suite: 'Suite' };
+          document.getElementById('confId').textContent = booking.id;
+          document.getElementById('confName').textContent = booking.guestName;
+          document.getElementById('confRoom').textContent = roomNames[booking.roomType] || booking.roomType;
+          document.getElementById('confCheckIn').textContent = booking.checkIn;
+          document.getElementById('confCheckOut').textContent = booking.checkOut;
+
+          var calc = window.Booking.calculatePrice(booking.roomType, booking.checkIn, booking.checkOut);
+          document.getElementById('confTotal').textContent = window.Booking.formatPrice(calc.total);
+        }
+      }
+
+      // Animations
+      var tl = gsap.timeline({ delay: 0.3 });
+
+      tl.from('.confirm-page__check-circle', {
+        strokeDashoffset: 283,
+        duration: 1,
+        ease: 'power2.inOut',
+      })
+      .from('.confirm-page__check-mark', {
+        strokeDashoffset: 80,
+        duration: 0.5,
+        ease: 'power2.out',
+      }, '-=0.3')
+      .from('.confirm-page__title', {
+        y: 40, opacity: 0, duration: 0.7, ease: 'power3.out',
+      }, '-=0.3')
+      .from('.confirm-page__subtitle', {
+        y: 20, opacity: 0, duration: 0.5, ease: 'power3.out',
+      }, '-=0.3')
+      .from('.confirm-page__details', {
+        y: 30, opacity: 0, duration: 0.6, ease: 'power3.out',
+      }, '-=0.2')
+      .from('.confirm-page__ctas', {
+        y: 20, opacity: 0, duration: 0.5, ease: 'power3.out',
+      }, '-=0.2');
+    });
+  </script>
+</body>
+</html>

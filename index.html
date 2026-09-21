@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HOTEL+ — A modern hotel booking experience designed around comfort, simplicity, and discovery in Cebu City." />
+  <title>HOTEL+ | Stay Different — Cebu City</title>
+
+  <!-- Preload critical assets -->
+  <link rel="preload" href="assets/images/hotel/hotel-exterior.png" as="image" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" as="style" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <!-- GSAP + Plugins (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CSSRulePlugin.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.1/dist/lenis.min.js" defer></script>
+
+  <!-- JavaScript Modules -->
+  <script src="js/navigation.js" defer></script>
+  <script src="js/animations.js" defer></script>
+  <script src="js/rooms.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+
+  <!-- ================================================== -->
+  <!-- CUSTOM CURSOR -->
+  <!-- ================================================== -->
+  <div id="cursor" class="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <span class="cursor-label"></span>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- LOADING SCREEN -->
+  <!-- ================================================== -->
+  <div id="loader" class="loader" role="status" aria-label="Loading">
+    <div class="loader__inner">
+      <div class="loader__logo">
+        <span class="loader__logo-text">HOTEL</span><span class="loader__logo-plus">+</span>
+      </div>
+      <div class="loader__sub">LOADING EXPERIENCE</div>
+      <div class="loader__progress">
+        <div class="loader__progress-bar"></div>
+      </div>
+      <div class="loader__counter">0%</div>
+    </div>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- NAVIGATION -->
+  <!-- ================================================== -->
+  <header id="navbar" class="navbar" role="banner">
+    <div class="navbar__inner">
+      <!-- Logo -->
+      <a href="index.html" class="navbar__logo" aria-label="Hotel+ Home">
+        <span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="navbar__nav" role="navigation" aria-label="Main navigation">
+        <ul class="navbar__links">
+          <li><a href="#rooms" class="navbar__link" data-cursor="link">ROOMS</a></li>
+          <li><a href="#experience" class="navbar__link" data-cursor="link">EXPERIENCE</a></li>
+          <li><a href="#booking" class="navbar__link" data-cursor="link">BOOK</a></li>
+          <li><a href="#story" class="navbar__link" data-cursor="link">ABOUT</a></li>
+        </ul>
+      </nav>
+
+      <!-- Login -->
+      <a href="pages/login.html" class="navbar__login" data-cursor="link">
+        <span>LOGIN</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="navbar__toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" data-cursor="link">
+        <span class="navbar__toggle-line"></span>
+        <span class="navbar__toggle-line"></span>
+        <span class="navbar__toggle-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================================================== -->
+  <!-- MOBILE FULLSCREEN MENU -->
+  <!-- ================================================== -->
+  <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation" hidden>
+    <div class="mobile-menu__overlay"></div>
+    <div class="mobile-menu__content">
+      <nav class="mobile-menu__nav">
+        <ul class="mobile-menu__links">
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">01</span>
+            <a href="#rooms" class="mobile-menu__link">ROOMS</a>
+          </li>
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">02</span>
+            <a href="#experience" class="mobile-menu__link">EXPERIENCE</a>
+          </li>
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">03</span>
+            <a href="#booking" class="mobile-menu__link">BOOK</a>
+          </li>
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">04</span>
+            <a href="#story" class="mobile-menu__link">ABOUT</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="mobile-menu__footer">
+        <a href="pages/login.html" class="mobile-menu__login">LOGIN →</a>
+        <p class="mobile-menu__info">Cebu City, Philippines</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- MAIN CONTENT -->
+  <!-- ================================================== -->
+  <main id="mainContent" role="main">
+
+    <!-- ============================================== -->
+    <!-- SECTION: HERO -->
+    <!-- ============================================== -->
+    <section id="hero" class="hero" aria-label="Welcome">
+      <!-- Background Image with Parallax -->
+      <div class="hero__image-wrapper">
+        <div class="hero__image-inner" id="heroImageInner">
+          <img
+            src="assets/images/hotel/hotel-exterior.png"
+            alt="Hotel+ exterior view — a modern luxury hotel building"
+            class="hero__image"
+            id="heroImage"
+          />
+        </div>
+        <div class="hero__image-overlay"></div>
+        <div class="hero__grain"></div>
+      </div>
+
+      <!-- Hero Content -->
+      <div class="hero__content">
+        <div class="hero__headline">
+          <div class="hero__line-wrap"><h1 class="hero__line hero__line--1">STAY</h1></div>
+          <div class="hero__line-wrap"><h1 class="hero__line hero__line--2">DIFFERENT<span class="hero__dot">.</span></h1></div>
+        </div>
+
+        <div class="hero__bottom">
+          <div class="hero__subtitle">
+            <p>A modern hotel booking experience<br />designed around comfort, simplicity,<br />and discovery in Cebu City.</p>
+          </div>
+
+          <div class="hero__ctas">
+            <a href="#rooms" class="btn btn--primary" data-cursor="cta">
+              <span class="btn__text">EXPLORE ROOMS</span>
+              <span class="btn__arrow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+            </a>
+            <a href="#booking" class="btn btn--outline" data-cursor="cta">
+              <span class="btn__text">BOOK YOUR STAY</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating Details -->
+      <div class="hero__details">
+        <div class="hero__detail hero__detail--location" id="heroDetail1">
+          <span class="hero__detail-label">LOCATION</span>
+          <span class="hero__detail-value">CEBU CITY</span>
+        </div>
+        <div class="hero__detail hero__detail--rating" id="heroDetail2">
+          <span class="hero__detail-label">RATING</span>
+          <span class="hero__detail-value">4.9 ★</span>
+        </div>
+        <div class="hero__detail hero__detail--est" id="heroDetail3">
+          <span class="hero__detail-label">ESTABLISHED</span>
+          <span class="hero__detail-value">2024</span>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="hero__scroll" aria-hidden="true">
+        <div class="hero__scroll-line"></div>
+        <span class="hero__scroll-text">SCROLL</span>
+      </div>
+
+      <!-- Section Number -->
+      <div class="hero__section-number" aria-hidden="true">01</div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION: HOTEL STORY -->
+    <!-- ============================================== -->
+    <section id="story" class="story" aria-label="About our hotel">
+      <div class="story__inner">
+        <!-- Left Column: Text -->
+        <div class="story__text">
+          <span class="story__number" aria-hidden="true">02 / HOTEL</span>
+          <div class="story__headline">
+            <div class="story__line-wrap"><h2 class="story__line">DESIGNED</h2></div>
+            <div class="story__line-wrap"><h2 class="story__line">FOR THE</h2></div>
+            <div class="story__line-wrap"><h2 class="story__line">MOMENT<span class="story__dot">.</span></h2></div>
+          </div>
+          <p class="story__description">
+            Every detail has been considered. Located in the vibrant heart of Cebu City,
+            our curated interiors and seamless digital experience create a sanctuary where
+            modern travelers feel at home.
+          </p>
+          <!-- Metadata Labels -->
+          <div class="story__meta">
+            <div class="story__meta-item">
+              <span class="story__meta-line"></span>
+              <span class="story__meta-label">24 / 7</span>
+              <span class="story__meta-value">SERVICE</span>
+            </div>
+            <div class="story__meta-item">
+              <span class="story__meta-line"></span>
+              <span class="story__meta-label">PRIME</span>
+              <span class="story__meta-value">CEBU CITY</span>
+            </div>
+            <div class="story__meta-item">
+              <span class="story__meta-line"></span>
+              <span class="story__meta-label">PREMIUM</span>
+              <span class="story__meta-value">ROOMS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Lobby Image -->
+        <div class="story__image-container">
+          <div class="story__image-reveal">
+            <div class="story__image-wrapper">
+              <img
+                src="assets/images/hotel/lobby.png"
+                alt="Hotel+ lobby — elegant modern interior with warm lighting"
+                class="story__image"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="story__image-caption">
+            <span>THE LOBBY</span>
+            <span>CEBU CITY</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION: EXPERIENCE (POOL) -->
+    <!-- ============================================== -->
+    <section id="experience" class="experience" aria-label="Hotel experience">
+      <div class="experience__inner">
+        <span class="experience__number" aria-hidden="true">03 / EXPERIENCE</span>
+
+        <div class="experience__headline">
+          <div class="experience__line-wrap"><h2 class="experience__line">SLOW</h2></div>
+          <div class="experience__line-wrap"><h2 class="experience__line">DOWN<span class="experience__dot">.</span></h2></div>
+        </div>
+
+        <div class="experience__image-container">
+          <div class="experience__image-wrapper">
+            <img
+              src="assets/images/hotel/pool.png"
+              alt="Hotel+ pool area — serene infinity pool with modern design"
+              class="experience__image"
+              loading="lazy"
+            />
+          </div>
+          <div class="experience__image-overlay"></div>
+        </div>
+
+        <div class="experience__content">
+          <p class="experience__description">
+            Step away from the ordinary. Our rooftop pool and wellness area
+            offer a sanctuary above Cebu City — where time moves at your pace
+            and every detail exists for your comfort.
+          </p>
+          <div class="experience__features">
+            <div class="experience__feature">
+              <span class="experience__feature-number">01</span>
+              <span class="experience__feature-text">ROOFTOP POOL</span>
+            </div>
+            <div class="experience__feature">
+              <span class="experience__feature-number">02</span>
+              <span class="experience__feature-text">SPA & WELLNESS</span>
+            </div>
+            <div class="experience__feature">
+              <span class="experience__feature-number">03</span>
+              <span class="experience__feature-text">FINE DINING</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION: ROOMS -->
+    <!-- ============================================== -->
+    <section id="rooms" class="rooms" aria-label="Our rooms">
+      <div class="rooms__inner">
+        <div class="rooms__header">
+          <span class="rooms__number" aria-hidden="true">04 / ROOMS</span>
+          <div class="rooms__headline">
+            <div class="rooms__line-wrap"><h2 class="rooms__line">YOUR</h2></div>
+            <div class="rooms__line-wrap"><h2 class="rooms__line">ROOM<span class="rooms__dot">.</span></h2></div>
+            <div class="rooms__line-wrap"><h2 class="rooms__line">YOUR</h2></div>
+            <div class="rooms__line-wrap"><h2 class="rooms__line">SPACE<span class="rooms__dot">.</span></h2></div>
+          </div>
+        </div>
+
+        <!-- Room Cards -->
+        <div class="rooms__grid">
+
+          <!-- Room 01: Standard -->
+          <article class="room-card" data-room="standard" data-cursor="view">
+            <div class="room-card__image-container">
+              <div class="room-card__image-wrapper">
+                <img
+                  src="assets/images/rooms/standard-room.png"
+                  alt="Standard Room — comfortable room with modern furnishings"
+                  class="room-card__image"
+                  loading="lazy"
+                />
+              </div>
+              <div class="room-card__image-overlay"></div>
+            </div>
+            <div class="room-card__content">
+              <div class="room-card__top">
+                <span class="room-card__number">01</span>
+                <span class="room-card__type">STANDARD</span>
+              </div>
+              <div class="room-card__info">
+                <h3 class="room-card__name">Standard Room</h3>
+                <p class="room-card__desc">A comfortable retreat with all essential amenities for the modern traveler.</p>
+                <div class="room-card__details">
+                  <span class="room-card__capacity">2 GUESTS</span>
+                  <span class="room-card__separator">•</span>
+                  <span class="room-card__size">28 M²</span>
+                </div>
+              </div>
+              <div class="room-card__bottom">
+                <div class="room-card__price">
+                  <span class="room-card__price-amount">₱2,500</span>
+                  <span class="room-card__price-period">/ NIGHT</span>
+                </div>
+                <a href="pages/rooms.html" class="room-card__cta" aria-label="View Standard Room details">
+                  <span>VIEW</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="room-card__line"></div>
+          </article>
+
+          <!-- Room 02: Deluxe -->
+          <article class="room-card" data-room="deluxe" data-cursor="view">
+            <div class="room-card__image-container">
+              <div class="room-card__image-wrapper">
+                <img
+                  src="assets/images/rooms/deluxe-room.png"
+                  alt="Deluxe Room — spacious room with premium appointments"
+                  class="room-card__image"
+                  loading="lazy"
+                />
+              </div>
+              <div class="room-card__image-overlay"></div>
+            </div>
+            <div class="room-card__content">
+              <div class="room-card__top">
+                <span class="room-card__number">02</span>
+                <span class="room-card__type">DELUXE</span>
+              </div>
+              <div class="room-card__info">
+                <h3 class="room-card__name">Deluxe Room</h3>
+                <p class="room-card__desc">Elevated comfort with panoramic views and curated design details throughout.</p>
+                <div class="room-card__details">
+                  <span class="room-card__capacity">2 GUESTS</span>
+                  <span class="room-card__separator">•</span>
+                  <span class="room-card__size">42 M²</span>
+                </div>
+              </div>
+              <div class="room-card__bottom">
+                <div class="room-card__price">
+                  <span class="room-card__price-amount">₱4,500</span>
+                  <span class="room-card__price-period">/ NIGHT</span>
+                </div>
+                <a href="pages/rooms.html" class="room-card__cta" aria-label="View Deluxe Room details">
+                  <span>VIEW</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="room-card__line"></div>
+          </article>
+
+          <!-- Room 03: Suite -->
+          <article class="room-card" data-room="suite" data-cursor="view">
+            <div class="room-card__image-container">
+              <div class="room-card__image-wrapper">
+                <img
+                  src="assets/images/rooms/suite-room.png"
+                  alt="Suite Room — luxurious suite with separate living area"
+                  class="room-card__image"
+                  loading="lazy"
+                />
+              </div>
+              <div class="room-card__image-overlay"></div>
+            </div>
+            <div class="room-card__content">
+              <div class="room-card__top">
+                <span class="room-card__number">03</span>
+                <span class="room-card__type">SUITE</span>
+              </div>
+              <div class="room-card__info">
+                <h3 class="room-card__name">Suite Room</h3>
+                <p class="room-card__desc">The ultimate expression of luxury — a private sanctuary with world-class amenities.</p>
+                <div class="room-card__details">
+                  <span class="room-card__capacity">4 GUESTS</span>
+                  <span class="room-card__separator">•</span>
+                  <span class="room-card__size">65 M²</span>
+                </div>
+              </div>
+              <div class="room-card__bottom">
+                <div class="room-card__price">
+                  <span class="room-card__price-amount">₱7,500</span>
+                  <span class="room-card__price-period">/ NIGHT</span>
+                </div>
+                <a href="pages/rooms.html" class="room-card__cta" aria-label="View Suite Room details">
+                  <span>VIEW</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7"/>
+                    <polyline points="7 7 17 7 17 17"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="room-card__line"></div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION: BOOKING CTA -->
+    <!-- ============================================== -->
+    <section id="booking" class="booking" aria-label="Book your stay">
+      <div class="booking__inner">
+        <span class="booking__number" aria-hidden="true">05 / BOOKING</span>
+
+        <div class="booking__headline">
+          <div class="booking__line-wrap"><h2 class="booking__line">BOOK</h2></div>
+          <div class="booking__line-wrap"><h2 class="booking__line">YOUR STAY<span class="booking__dot">.</span></h2></div>
+        </div>
+
+        <!-- Booking Form -->
+        <form class="booking__form" id="bookingForm" novalidate>
+          <div class="booking__fields">
+            <!-- Check-in -->
+            <div class="booking__field">
+              <label for="checkIn" class="booking__label">CHECK-IN</label>
+              <input
+                type="date"
+                id="checkIn"
+                name="checkIn"
+                class="booking__input"
+                required
+                aria-required="true"
+              />
+              <div class="booking__field-line"></div>
+            </div>
+
+            <!-- Check-out -->
+            <div class="booking__field">
+              <label for="checkOut" class="booking__label">CHECK-OUT</label>
+              <input
+                type="date"
+                id="checkOut"
+                name="checkOut"
+                class="booking__input"
+                required
+                aria-required="true"
+              />
+              <div class="booking__field-line"></div>
+            </div>
+
+            <!-- Guests -->
+            <div class="booking__field">
+              <label for="guests" class="booking__label">GUESTS</label>
+              <select id="guests" name="guests" class="booking__input booking__select" required aria-required="true">
+                <option value="" disabled selected>Select</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+              </select>
+              <div class="booking__field-line"></div>
+            </div>
+
+            <!-- Room Type -->
+            <div class="booking__field">
+              <label for="roomType" class="booking__label">ROOM TYPE</label>
+              <select id="roomType" name="roomType" class="booking__input booking__select" required aria-required="true">
+                <option value="" disabled selected>Select</option>
+                <option value="standard">Standard — ₱2,500</option>
+                <option value="deluxe">Deluxe — ₱4,500</option>
+                <option value="suite">Suite — ₱7,500</option>
+              </select>
+              <div class="booking__field-line"></div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn--book" data-cursor="cta">
+            <span class="btn__text">CHECK AVAILABILITY</span>
+            <span class="btn__arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================== -->
+  <!-- FOOTER -->
+  <!-- ================================================== -->
+  <footer id="footer" class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <!-- Top row -->
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="footer__logo">HOTEL<span class="footer__logo-plus">+</span></span>
+          <p class="footer__tagline">Stay Different — Cebu City.</p>
+        </div>
+        <div class="footer__nav-group">
+          <div class="footer__nav-col">
+            <h4 class="footer__nav-title">NAVIGATE</h4>
+            <ul class="footer__nav-list">
+              <li><a href="#hero" class="footer__nav-link">Home</a></li>
+              <li><a href="#rooms" class="footer__nav-link">Rooms</a></li>
+              <li><a href="#experience" class="footer__nav-link">Experience</a></li>
+              <li><a href="#booking" class="footer__nav-link">Book</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-col">
+            <h4 class="footer__nav-title">CONNECT</h4>
+            <ul class="footer__nav-list">
+              <li><a href="#" class="footer__nav-link">Instagram</a></li>
+              <li><a href="#" class="footer__nav-link">Twitter</a></li>
+              <li><a href="#" class="footer__nav-link">Facebook</a></li>
+              <li><a href="#" class="footer__nav-link">LinkedIn</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-col">
+            <h4 class="footer__nav-title">CONTACT</h4>
+            <ul class="footer__nav-list">
+              <li><a href="mailto:markanthonyblanco20@gmail.com" class="footer__nav-link" data-cursor="link">markanthonyblanco20@gmail.com</a></li>
+              <li><a href="tel:09932034185" class="footer__nav-link" data-cursor="link">+63 993 203 4185</a></li>
+              <li><span class="footer__nav-text">Cebu City, Philippines</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="footer__divider"></div>
+
+      <!-- Bottom row -->
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2024 HOTEL+. All rights reserved.</p>
+        <p class="footer__credit">Developed by Mark Anthony Blanco — Hotel Booking Management System</p>
+        <a href="#hero" class="footer__back-top" data-cursor="link" aria-label="Back to top">
+          <span>TOP</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Large footer text -->
+    <div class="footer__large-text" aria-hidden="true">
+      <span>HOTEL+</span>
+    </div>
+  </footer>
+
+</body>
+</html>

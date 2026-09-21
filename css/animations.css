@@ -1,0 +1,211 @@
+/* ================================================== */
+/* ANIMATIONS.CSS — GSAP + CSS KEYFRAME ANIMATIONS    */
+/* ================================================== */
+
+/* ================================================== */
+/* SCROLL INDICATOR PULSE                             */
+/* ================================================== */
+@keyframes scrollPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.2);
+    transform-origin: top;
+  }
+}
+
+/* ================================================== */
+/* GRAIN ANIMATION                                    */
+/* ================================================== */
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -2%); }
+  20% { transform: translate(2%, 2%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-2%, 2%); }
+  60% { transform: translate(2%, -2%); }
+  70% { transform: translate(0, 2%); }
+  80% { transform: translate(-2%, 0); }
+  90% { transform: translate(2%, 1%); }
+}
+
+.hero__grain {
+  animation: grainShift 0.5s steps(1) infinite;
+}
+
+/* ================================================== */
+/* GENERAL REVEAL CLASSES (used by GSAP)              */
+/* ================================================== */
+
+/* Elements that will be revealed by scroll */
+.reveal-text {
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+.reveal-fade {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+}
+
+.reveal-slide-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  will-change: transform, opacity;
+}
+
+.reveal-slide-right {
+  opacity: 0;
+  transform: translateX(50px);
+  will-change: transform, opacity;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  will-change: transform, opacity;
+}
+
+/* Image clip reveal */
+.reveal-clip {
+  clip-path: inset(0 0 100% 0);
+  will-change: clip-path;
+}
+
+/* ================================================== */
+/* BUTTON HOVER MICRO-ANIMATIONS                     */
+/* ================================================== */
+@keyframes arrowSlide {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+
+/* ================================================== */
+/* ROOM CARD ENTRANCE (stagger, controlled by GSAP)  */
+/* ================================================== */
+.room-card {
+  opacity: 0;
+  transform: translateY(60px);
+  will-change: transform, opacity;
+}
+
+.room-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================================== */
+/* LOADING SCREEN TRANSITIONS                        */
+/* ================================================== */
+@keyframes loaderFadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* ================================================== */
+/* NAVBAR REVEAL                                     */
+/* ================================================== */
+.navbar {
+  transform: translateY(-100%);
+  will-change: transform;
+}
+
+.navbar.is-visible {
+  transform: translateY(0);
+}
+
+/* ================================================== */
+/* IMAGE SCALE ON SCROLL (controlled by GSAP)        */
+/* ================================================== */
+.parallax-image {
+  will-change: transform;
+}
+
+/* ================================================== */
+/* SECTION META LABELS                               */
+/* ================================================== */
+.story__meta-item,
+.experience__feature {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+}
+
+/* ================================================== */
+/* BOOKING FIELD ANIMATIONS                          */
+/* ================================================== */
+.booking__field {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+}
+
+/* ================================================== */
+/* FOOTER REVEAL                                     */
+/* ================================================== */
+.footer__top,
+.footer__bottom {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: transform, opacity;
+}
+
+/* ================================================== */
+/* REDUCED MOTION                                    */
+/* ================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero__grain {
+    animation: none;
+  }
+
+  .hero__scroll-line {
+    animation: none;
+  }
+
+  .reveal-text,
+  .reveal-fade,
+  .reveal-slide-left,
+  .reveal-slide-right,
+  .reveal-scale,
+  .room-card,
+  .story__meta-item,
+  .experience__feature,
+  .booking__field,
+  .footer__top,
+  .footer__bottom {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+
+  .navbar {
+    transform: none;
+  }
+
+  .hero__line {
+    transform: none;
+  }
+
+  .hero__subtitle,
+  .hero__ctas,
+  .hero__detail,
+  .hero__scroll,
+  .hero__section-number {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL+ | Rooms</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://unpkg.com/lenis@1.1.1/dist/lenis.min.js" defer></script>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="cursor" class="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <span class="cursor-label"></span>
+  </div>
+
+  <!-- Navbar -->
+  <header id="navbar" class="navbar is-visible" role="banner">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo"><span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span></a>
+      <nav class="navbar__nav">
+        <ul class="navbar__links">
+          <li><a href="rooms.html" class="navbar__link" style="color:var(--accent)">ROOMS</a></li>
+          <li><a href="../index.html#experience" class="navbar__link">EXPERIENCE</a></li>
+          <li><a href="booking.html" class="navbar__link">BOOK</a></li>
+          <li><a href="../index.html#story" class="navbar__link">ABOUT</a></li>
+        </ul>
+      </nav>
+      <a href="login.html" class="navbar__login"><span>LOGIN</span></a>
+    </div>
+  </header>
+
+  <main class="rooms-page">
+
+    <!-- Page Header -->
+    <section class="rooms-page__header">
+      <span class="rooms-page__number">01 / ROOMS</span>
+      <h1 class="rooms-page__title">
+        <span class="rooms-page__title-line">CHOOSE</span>
+        <span class="rooms-page__title-line">YOUR SPACE<span class="rooms-page__dot">.</span></span>
+      </h1>
+      <p class="rooms-page__subtitle">Three distinct experiences, each designed for a different kind of traveler.</p>
+    </section>
+
+    <!-- Room 01: Standard -->
+    <section class="room-detail" id="room-standard">
+      <div class="room-detail__inner">
+        <div class="room-detail__image-col">
+          <div class="room-detail__image-wrap">
+            <img src="../assets/images/rooms/standard-room.png" alt="Standard Room" class="room-detail__image" loading="lazy" />
+          </div>
+        </div>
+        <div class="room-detail__content-col">
+          <span class="room-detail__number">01</span>
+          <span class="room-detail__type">STANDARD</span>
+          <h2 class="room-detail__name">Standard Room</h2>
+          <p class="room-detail__desc">A comfortable retreat with all essential amenities for the modern traveler. Clean lines, warm lighting, and thoughtful touches create a space that feels both minimal and inviting.</p>
+          <div class="room-detail__specs">
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">CAPACITY</span>
+              <span class="room-detail__spec-value">2 Guests</span>
+            </div>
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">SIZE</span>
+              <span class="room-detail__spec-value">28 M²</span>
+            </div>
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">BED</span>
+              <span class="room-detail__spec-value">Queen Bed</span>
+            </div>
+          </div>
+          <div class="room-detail__amenities">
+            <span class="room-detail__amenity">Wi-Fi</span>
+            <span class="room-detail__amenity">A/C</span>
+            <span class="room-detail__amenity">Smart TV</span>
+            <span class="room-detail__amenity">Mini Fridge</span>
+            <span class="room-detail__amenity">Hot Shower</span>
+            <span class="room-detail__amenity">Room Service</span>
+          </div>
+          <div class="room-detail__bottom">
+            <div class="room-detail__price">
+              <span class="room-detail__price-amount">₱2,500</span>
+              <span class="room-detail__price-period">/ NIGHT</span>
+            </div>
+            <a href="booking.html?room=standard" class="btn btn--primary" data-cursor="cta">
+              <span class="btn__text">BOOK THIS ROOM</span>
+              <span class="btn__arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room 02: Deluxe -->
+    <section class="room-detail room-detail--reverse" id="room-deluxe">
+      <div class="room-detail__inner">
+        <div class="room-detail__image-col">
+          <div class="room-detail__image-wrap">
+            <img src="../assets/images/rooms/deluxe-room.png" alt="Deluxe Room" class="room-detail__image" loading="lazy" />
+          </div>
+        </div>
+        <div class="room-detail__content-col">
+          <span class="room-detail__number">02</span>
+          <span class="room-detail__type">DELUXE</span>
+          <h2 class="room-detail__name">Deluxe Room</h2>
+          <p class="room-detail__desc">Elevated comfort with panoramic views of Cebu City and curated design details throughout. The Deluxe Room offers a generous living area and premium bathroom fixtures.</p>
+          <div class="room-detail__specs">
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">CAPACITY</span>
+              <span class="room-detail__spec-value">2 Guests</span>
+            </div>
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">SIZE</span>
+              <span class="room-detail__spec-value">42 M²</span>
+            </div>
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">BED</span>
+              <span class="room-detail__spec-value">King Bed</span>
+            </div>
+          </div>
+          <div class="room-detail__amenities">
+            <span class="room-detail__amenity">Wi-Fi</span>
+            <span class="room-detail__amenity">A/C</span>
+            <span class="room-detail__amenity">55" Smart TV</span>
+            <span class="room-detail__amenity">Mini Bar</span>
+            <span class="room-detail__amenity">Rain Shower</span>
+            <span class="room-detail__amenity">City View</span>
+            <span class="room-detail__amenity">Workspace</span>
+          </div>
+          <div class="room-detail__bottom">
+            <div class="room-detail__price">
+              <span class="room-detail__price-amount">₱4,500</span>
+              <span class="room-detail__price-period">/ NIGHT</span>
+            </div>
+            <a href="booking.html?room=deluxe" class="btn btn--primary" data-cursor="cta">
+              <span class="btn__text">BOOK THIS ROOM</span>
+              <span class="btn__arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room 03: Suite -->
+    <section class="room-detail" id="room-suite">
+      <div class="room-detail__inner">
+        <div class="room-detail__image-col">
+          <div class="room-detail__image-wrap">
+            <img src="../assets/images/rooms/suite-room.png" alt="Suite Room" class="room-detail__image" loading="lazy" />
+          </div>
+        </div>
+        <div class="room-detail__content-col">
+          <span class="room-detail__number">03</span>
+          <span class="room-detail__type">SUITE</span>
+          <h2 class="room-detail__name">Suite Room</h2>
+          <p class="room-detail__desc">The ultimate expression of luxury — a private sanctuary with world-class amenities, a separate living area, and breathtaking views of the Cebu skyline.</p>
+          <div class="room-detail__specs">
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">CAPACITY</span>
+              <span class="room-detail__spec-value">4 Guests</span>
+            </div>
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">SIZE</span>
+              <span class="room-detail__spec-value">65 M²</span>
+            </div>
+            <div class="room-detail__spec">
+              <span class="room-detail__spec-label">BED</span>
+              <span class="room-detail__spec-value">King + Sofa Bed</span>
+            </div>
+          </div>
+          <div class="room-detail__amenities">
+            <span class="room-detail__amenity">Wi-Fi</span>
+            <span class="room-detail__amenity">A/C</span>
+            <span class="room-detail__amenity">65" Smart TV</span>
+            <span class="room-detail__amenity">Full Bar</span>
+            <span class="room-detail__amenity">Jacuzzi</span>
+            <span class="room-detail__amenity">24/7 Butler</span>
+            <span class="room-detail__amenity">Skyline View</span>
+            <span class="room-detail__amenity">Living Room</span>
+          </div>
+          <div class="room-detail__bottom">
+            <div class="room-detail__price">
+              <span class="room-detail__price-amount">₱7,500</span>
+              <span class="room-detail__price-period">/ NIGHT</span>
+            </div>
+            <a href="booking.html?room=suite" class="btn btn--primary" data-cursor="cta">
+              <span class="btn__text">BOOK THIS ROOM</span>
+              <span class="btn__arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo" data-component="../components/footer.html"></footer>
+
+  <!-- Scripts -->
+  <script src="../js/components.js" defer></script>
+  <script src="../js/booking.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Load footer component
+      if (window.Components) window.Components.loadAll();
+
+      // Navbar scroll
+      window.addEventListener('scroll', function () {
+        var nav = document.getElementById('navbar');
+        if (window.scrollY > 50) nav.classList.add('is-scrolled');
+        else nav.classList.remove('is-scrolled');
+      }, { passive: true });
+
+      // GSAP Animations
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.from('.rooms-page__title-line', {
+        y: '100%', duration: 1, ease: 'power3.out', stagger: 0.15, delay: 0.3
+      });
+
+      gsap.from('.rooms-page__subtitle', {
+        opacity: 0, y: 20, duration: 0.7, ease: 'power3.out', delay: 0.7
+      });
+
+      document.querySelectorAll('.room-detail').forEach(function (section) {
+        gsap.from(section.querySelector('.room-detail__image-wrap'), {
+          clipPath: 'inset(0 0 100% 0)',
+          duration: 1.2,
+          ease: 'power3.inOut',
+          scrollTrigger: { trigger: section, start: 'top 75%' }
+        });
+
+        gsap.from(section.querySelector('.room-detail__content-col'), {
+          opacity: 0, x: 40, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: section, start: 'top 70%' }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

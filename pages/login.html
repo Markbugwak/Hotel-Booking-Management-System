@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL+ | Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div id="cursor" class="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <span class="cursor-label"></span>
+  </div>
+
+  <!-- Page Transition Overlay -->
+  <div id="pageTransition" class="page-transition">
+    <div class="page-transition__text">HOTEL<span>+</span></div>
+  </div>
+
+  <!-- Navbar -->
+  <header id="navbar" class="navbar is-scrolled is-visible" role="banner">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo" aria-label="Hotel+ Home">
+        <span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span>
+      </a>
+      <nav class="navbar__nav">
+        <ul class="navbar__links">
+          <li><a href="../index.html#rooms" class="navbar__link">ROOMS</a></li>
+          <li><a href="../index.html#experience" class="navbar__link">EXPERIENCE</a></li>
+          <li><a href="../index.html#booking" class="navbar__link">BOOK</a></li>
+          <li><a href="../index.html#story" class="navbar__link">ABOUT</a></li>
+        </ul>
+      </nav>
+      <a href="login.html" class="navbar__login">
+        <span>LOGIN</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Login Page -->
+  <main class="login-page">
+    <div class="login-page__inner">
+
+      <!-- Left: Hero Image -->
+      <div class="login-page__image">
+        <img
+          src="../assets/images/hotel/hotel-exterior.png"
+          alt="Hotel+ exterior at night"
+          class="login-page__img"
+        />
+        <div class="login-page__image-overlay"></div>
+        <div class="login-page__image-text">
+          <span class="login-page__image-label">CEBU CITY</span>
+          <h2 class="login-page__image-headline">YOUR<br />STAY<br />AWAITS<span>.</span></h2>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="login-page__form-container">
+        <div class="login-page__form-inner">
+
+          <!-- Login Form -->
+          <div id="loginForm" class="login-form is-active">
+            <span class="login-form__number">01 / AUTH</span>
+            <h1 class="login-form__title">WELCOME<br />BACK<span class="login-form__dot">.</span></h1>
+            <p class="login-form__subtitle">Sign in to manage your bookings and preferences.</p>
+
+            <form id="loginFormEl" class="login-form__fields" novalidate>
+              <div class="login-form__field">
+                <label for="loginEmail" class="login-form__label">EMAIL</label>
+                <input type="email" id="loginEmail" class="login-form__input" placeholder="your@email.com" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="loginPassword" class="login-form__label">PASSWORD</label>
+                <input type="password" id="loginPassword" class="login-form__input" placeholder="••••••••" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__options">
+                <label class="login-form__checkbox">
+                  <input type="checkbox" />
+                  <span class="login-form__checkmark"></span>
+                  <span>Remember me</span>
+                </label>
+                <a href="#" class="login-form__forgot">Forgot password?</a>
+              </div>
+
+              <button type="submit" class="btn btn--primary btn--full" data-cursor="cta">
+                <span class="btn__text">SIGN IN</span>
+                <span class="btn__arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </button>
+            </form>
+
+            <p class="login-form__switch">
+              Don't have an account?
+              <button class="login-form__toggle-btn" id="showRegister">Create one</button>
+            </p>
+          </div>
+
+          <!-- Register Form -->
+          <div id="registerForm" class="login-form">
+            <span class="login-form__number">02 / AUTH</span>
+            <h1 class="login-form__title">JOIN<br />HOTEL+<span class="login-form__dot">.</span></h1>
+            <p class="login-form__subtitle">Create your account and start your journey.</p>
+
+            <form id="registerFormEl" class="login-form__fields" novalidate>
+              <div class="login-form__field">
+                <label for="regName" class="login-form__label">FULL NAME</label>
+                <input type="text" id="regName" class="login-form__input" placeholder="Mark Anthony Blanco" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="regEmail" class="login-form__label">EMAIL</label>
+                <input type="email" id="regEmail" class="login-form__input" placeholder="your@email.com" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="regPhone" class="login-form__label">PHONE</label>
+                <input type="tel" id="regPhone" class="login-form__input" placeholder="+63 9XX XXX XXXX" />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="regPassword" class="login-form__label">PASSWORD</label>
+                <input type="password" id="regPassword" class="login-form__input" placeholder="••••••••" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <button type="submit" class="btn btn--primary btn--full" data-cursor="cta">
+                <span class="btn__text">CREATE ACCOUNT</span>
+                <span class="btn__arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </button>
+            </form>
+
+            <p class="login-form__switch">
+              Already have an account?
+              <button class="login-form__toggle-btn" id="showLogin">Sign in</button>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../js/components.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      /* ---- Page Entrance Animation ---- */
+      var tl = gsap.timeline();
+
+      tl.from('.login-page__image', {
+        clipPath: 'inset(0 100% 0 0)',
+        duration: 1.2,
+        ease: 'power3.inOut',
+      })
+      .from('.login-page__form-inner', {
+        opacity: 0,
+        x: 40,
+        duration: 0.8,
+        ease: 'power3.out',
+      }, '-=0.5')
+      .from('.login-form__title', {
+        y: 60,
+        opacity: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+      }, '-=0.5')
+      .from('.login-form__fields', {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        ease: 'power3.out',
+      }, '-=0.3');
+
+      /* ---- Toggle Login / Register ---- */
+      var loginForm = document.getElementById('loginForm');
+      var registerForm = document.getElementById('registerForm');
+
+      document.getElementById('showRegister').addEventListener('click', function () {
+        gsap.to(loginForm, {
+          opacity: 0, x: -30, duration: 0.3, ease: 'power2.in',
+          onComplete: function () {
+            loginForm.classList.remove('is-active');
+            registerForm.classList.add('is-active');
+            gsap.fromTo(registerForm, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
+          }
+        });
+      });
+
+      document.getElementById('showLogin').addEventListener('click', function () {
+        gsap.to(registerForm, {
+          opacity: 0, x: 30, duration: 0.3, ease: 'power2.in',
+          onComplete: function () {
+            registerForm.classList.remove('is-active');
+            loginForm.classList.add('is-active');
+            gsap.fromTo(loginForm, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
+          }
+        });
+      });
+
+      /* ---- Form Submit Handlers ---- */
+      document.getElementById('loginFormEl').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = this.querySelector('.btn__text');
+        btn.textContent = 'SIGNING IN...';
+        setTimeout(function () {
+          btn.textContent = 'WELCOME ✓';
+          setTimeout(function () {
+            window.location.href = '../index.html';
+          }, 1000);
+        }, 1500);
+      });
+
+      document.getElementById('registerFormEl').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = this.querySelector('.btn__text');
+        btn.textContent = 'CREATING...';
+        setTimeout(function () {
+          btn.textContent = 'ACCOUNT CREATED ✓';
+          setTimeout(function () {
+            window.location.href = '../index.html';
+          }, 1000);
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>

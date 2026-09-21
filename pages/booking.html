@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL+ | Book Your Stay</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+</head>
+<body>
+
+  <div id="cursor" class="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <span class="cursor-label"></span>
+  </div>
+
+  <!-- Navbar -->
+  <header id="navbar" class="navbar is-scrolled is-visible" role="banner">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__logo"><span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span></a>
+      <nav class="navbar__nav">
+        <ul class="navbar__links">
+          <li><a href="rooms.html" class="navbar__link">ROOMS</a></li>
+          <li><a href="../index.html#experience" class="navbar__link">EXPERIENCE</a></li>
+          <li><a href="booking.html" class="navbar__link" style="color:var(--accent)">BOOK</a></li>
+          <li><a href="../index.html#story" class="navbar__link">ABOUT</a></li>
+        </ul>
+      </nav>
+      <a href="login.html" class="navbar__login"><span>LOGIN</span></a>
+    </div>
+  </header>
+
+  <main class="booking-page">
+    <div class="booking-page__inner">
+
+      <!-- Header -->
+      <div class="booking-page__header">
+        <span class="booking-page__number">01 / RESERVATION</span>
+        <h1 class="booking-page__title">RESERVE<br />YOUR STAY<span class="booking-page__dot">.</span></h1>
+      </div>
+
+      <div class="booking-page__layout">
+
+        <!-- Left: Form -->
+        <div class="booking-page__form-col">
+
+          <!-- Step 1: Dates & Room -->
+          <div class="booking-step is-active" id="step1">
+            <h2 class="booking-step__title">TRIP DETAILS</h2>
+            <form id="bookingStep1Form" class="booking-page__form" novalidate>
+              <div class="booking-page__field">
+                <label for="bCheckIn" class="booking-page__label">CHECK-IN</label>
+                <input type="date" id="bCheckIn" class="booking-page__input" required />
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__field">
+                <label for="bCheckOut" class="booking-page__label">CHECK-OUT</label>
+                <input type="date" id="bCheckOut" class="booking-page__input" required />
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__field">
+                <label for="bGuests" class="booking-page__label">GUESTS</label>
+                <select id="bGuests" class="booking-page__input" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                </select>
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__field">
+                <label for="bRoom" class="booking-page__label">ROOM TYPE</label>
+                <select id="bRoom" class="booking-page__input" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="standard">Standard — ₱2,500/night</option>
+                  <option value="deluxe">Deluxe — ₱4,500/night</option>
+                  <option value="suite">Suite — ₱7,500/night</option>
+                </select>
+                <div class="booking-page__field-line"></div>
+              </div>
+              <button type="button" class="btn btn--primary btn--full" id="toStep2" data-cursor="cta">
+                <span class="btn__text">CONTINUE</span>
+                <span class="btn__arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Step 2: Guest Info -->
+          <div class="booking-step" id="step2">
+            <h2 class="booking-step__title">GUEST INFORMATION</h2>
+            <form id="bookingStep2Form" class="booking-page__form" novalidate>
+              <div class="booking-page__field">
+                <label for="bName" class="booking-page__label">FULL NAME</label>
+                <input type="text" id="bName" class="booking-page__input" placeholder="Mark Anthony Blanco" required />
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__field">
+                <label for="bEmail" class="booking-page__label">EMAIL</label>
+                <input type="email" id="bEmail" class="booking-page__input" placeholder="markanthonyblanco20@gmail.com" required />
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__field">
+                <label for="bPhone" class="booking-page__label">PHONE</label>
+                <input type="tel" id="bPhone" class="booking-page__input" placeholder="+63 993 203 4185" required />
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__field">
+                <label for="bRequests" class="booking-page__label">SPECIAL REQUESTS</label>
+                <textarea id="bRequests" class="booking-page__input booking-page__textarea" placeholder="Any special requirements..." rows="3"></textarea>
+                <div class="booking-page__field-line"></div>
+              </div>
+              <div class="booking-page__btns">
+                <button type="button" class="btn btn--outline" id="backToStep1">
+                  <span class="btn__text">BACK</span>
+                </button>
+                <button type="button" class="btn btn--primary" id="confirmBooking" data-cursor="cta">
+                  <span class="btn__text">CONFIRM BOOKING</span>
+                  <span class="btn__arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Right: Summary -->
+        <div class="booking-page__summary-col">
+          <div class="booking-summary">
+            <h3 class="booking-summary__title">BOOKING SUMMARY</h3>
+            <div class="booking-summary__divider"></div>
+            <div class="booking-summary__row">
+              <span class="booking-summary__label">Room</span>
+              <span class="booking-summary__value" id="sumRoom">—</span>
+            </div>
+            <div class="booking-summary__row">
+              <span class="booking-summary__label">Check-in</span>
+              <span class="booking-summary__value" id="sumCheckIn">—</span>
+            </div>
+            <div class="booking-summary__row">
+              <span class="booking-summary__label">Check-out</span>
+              <span class="booking-summary__value" id="sumCheckOut">—</span>
+            </div>
+            <div class="booking-summary__row">
+              <span class="booking-summary__label">Guests</span>
+              <span class="booking-summary__value" id="sumGuests">—</span>
+            </div>
+            <div class="booking-summary__row">
+              <span class="booking-summary__label">Nights</span>
+              <span class="booking-summary__value" id="sumNights">—</span>
+            </div>
+            <div class="booking-summary__divider"></div>
+            <div class="booking-summary__row booking-summary__row--total">
+              <span class="booking-summary__label">TOTAL</span>
+              <span class="booking-summary__value" id="sumTotal">₱0</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo" data-component="../components/footer.html"></footer>
+
+  <script src="../js/components.js" defer></script>
+  <script src="../js/booking.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.Components) window.Components.loadAll();
+
+      var today = new Date().toISOString().split('T')[0];
+      var checkInEl = document.getElementById('bCheckIn');
+      var checkOutEl = document.getElementById('bCheckOut');
+      var roomEl = document.getElementById('bRoom');
+      var guestsEl = document.getElementById('bGuests');
+
+      checkInEl.min = today;
+
+      // Auto-select room from URL param
+      var params = new URLSearchParams(window.location.search);
+      var roomParam = params.get('room');
+      if (roomParam && roomEl) {
+        roomEl.value = roomParam;
+        updateSummary();
+      }
+
+      // Update summary on change
+      [checkInEl, checkOutEl, roomEl, guestsEl].forEach(function (el) {
+        el.addEventListener('change', function () {
+          if (checkInEl.value) {
+            var next = new Date(checkInEl.value);
+            next.setDate(next.getDate() + 1);
+            checkOutEl.min = next.toISOString().split('T')[0];
+          }
+          updateSummary();
+        });
+      });
+
+      function updateSummary() {
+        var roomNames = { standard: 'Standard', deluxe: 'Deluxe', suite: 'Suite' };
+        document.getElementById('sumRoom').textContent = roomNames[roomEl.value] || '—';
+        document.getElementById('sumCheckIn').textContent = checkInEl.value || '—';
+        document.getElementById('sumCheckOut').textContent = checkOutEl.value || '—';
+        document.getElementById('sumGuests').textContent = guestsEl.value ? guestsEl.value + ' Guest(s)' : '—';
+
+        if (window.Booking && checkInEl.value && checkOutEl.value && roomEl.value) {
+          var calc = window.Booking.calculatePrice(roomEl.value, checkInEl.value, checkOutEl.value);
+          document.getElementById('sumNights').textContent = calc.nights;
+          document.getElementById('sumTotal').textContent = window.Booking.formatPrice(calc.total);
+        }
+      }
+
+      // Step navigation
+      document.getElementById('toStep2').addEventListener('click', function () {
+        if (!checkInEl.value || !checkOutEl.value || !guestsEl.value || !roomEl.value) {
+          alert('Please fill in all fields.');
+          return;
+        }
+        document.getElementById('step1').classList.remove('is-active');
+        document.getElementById('step2').classList.add('is-active');
+        gsap.from('#step2', { opacity: 0, x: 30, duration: 0.5, ease: 'power3.out' });
+      });
+
+      document.getElementById('backToStep1').addEventListener('click', function () {
+        document.getElementById('step2').classList.remove('is-active');
+        document.getElementById('step1').classList.add('is-active');
+        gsap.from('#step1', { opacity: 0, x: -30, duration: 0.5, ease: 'power3.out' });
+      });
+
+      // Confirm booking
+      document.getElementById('confirmBooking').addEventListener('click', function () {
+        var name = document.getElementById('bName').value;
+        var email = document.getElementById('bEmail').value;
+        var phone = document.getElementById('bPhone').value;
+
+        if (!name || !email || !phone) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        var btnText = this.querySelector('.btn__text');
+        btnText.textContent = 'PROCESSING...';
+
+        setTimeout(function () {
+          var booking = {
+            checkIn: checkInEl.value,
+            checkOut: checkOutEl.value,
+            guests: guestsEl.value,
+            roomType: roomEl.value,
+            guestName: name,
+            guestEmail: email,
+            guestPhone: phone,
+            specialRequests: document.getElementById('bRequests').value,
+          };
+
+          if (window.Booking) {
+            var saved = window.Booking.saveBooking(booking);
+            window.location.href = 'confirmation.html?id=' + saved.id;
+          } else {
+            window.location.href = 'confirmation.html';
+          }
+        }, 1500);
+      });
+
+      // Entrance animation
+      gsap.from('.booking-page__title', { y: 60, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 });
+      gsap.from('.booking-page__form-col', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', delay: 0.4 });
+      gsap.from('.booking-summary', { opacity: 0, y: 30, duration: 0.7, ease: 'power3.out', delay: 0.6 });
+    });
+  </script>
+</body>
+</html>
