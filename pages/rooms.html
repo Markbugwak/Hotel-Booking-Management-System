@@ -11,6 +11,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="https://unpkg.com/lenis@1.1.1/dist/lenis.min.js" defer></script>
+
+  <style>
+    .navbar__link.is-active {
+      color: var(--accent);
+    }
+  </style>
+
 </head>
 <body>
 
@@ -22,20 +29,22 @@
   </div>
 
   <!-- Navbar -->
-  <header id="navbar" class="navbar is-visible" role="banner">
-    <div class="navbar__inner">
-      <a href="../index.html" class="navbar__logo"><span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span></a>
-      <nav class="navbar__nav">
-        <ul class="navbar__links">
-          <li><a href="rooms.html" class="navbar__link" style="color:var(--accent)">ROOMS</a></li>
-          <li><a href="../index.html#experience" class="navbar__link">EXPERIENCE</a></li>
-          <li><a href="booking.html" class="navbar__link">BOOK</a></li>
-          <li><a href="../index.html#story" class="navbar__link">ABOUT</a></li>
-        </ul>
-      </nav>
-      <a href="login.html" class="navbar__login"><span>LOGIN</span></a>
-    </div>
-  </header>
+<header id="navbar" class="navbar is-visible" role="banner">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span>
+    </a>
+    <nav class="navbar__nav" aria-label="Main navigation">
+      <ul class="navbar__links">
+        <li><a href="rooms.html" class="navbar__link is-active">ROOMS</a></li>
+        <li><a href="../index.html#experience" class="navbar__link">EXPERIENCE</a></li>
+        <li><a href="booking.html" class="navbar__link ">BOOK</a></li>
+        <li><a href="../index.html#story" class="navbar__link">ABOUT</a></li>
+      </ul>
+    </nav>
+    <a href="login.html" class="navbar__login"><span>LOGIN</span></a>
+  </div>
+</header>
 
   <main class="rooms-page">
 
@@ -114,7 +123,7 @@
           <div class="room-detail__specs">
             <div class="room-detail__spec">
               <span class="room-detail__spec-label">CAPACITY</span>
-              <span class="room-detail__spec-value">2 Guests</span>
+              <span class="room-detail__spec-value">3 Guests</span>
             </div>
             <div class="room-detail__spec">
               <span class="room-detail__spec-label">SIZE</span>
@@ -202,7 +211,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="footer" role="contentinfo" data-component="../components/footer.html"></footer>
+  <footer id="footer" class="footer" role="contentinfo" data-component="../components/footer.html"></footer>
 
   <!-- Scripts -->
   <script src="../js/components.js" defer></script>

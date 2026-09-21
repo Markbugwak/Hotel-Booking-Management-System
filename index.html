@@ -138,7 +138,6 @@
     <!-- SECTION: HERO -->
     <!-- ============================================== -->
     <section id="hero" class="hero" aria-label="Welcome">
-      <!-- Background Image with Parallax -->
       <div class="hero__image-wrapper">
         <div class="hero__image-inner" id="heroImageInner">
           <img
@@ -152,7 +151,6 @@
         <div class="hero__grain"></div>
       </div>
 
-      <!-- Hero Content -->
       <div class="hero__content">
         <div class="hero__headline">
           <div class="hero__line-wrap"><h1 class="hero__line hero__line--1">STAY</h1></div>
@@ -181,7 +179,6 @@
         </div>
       </div>
 
-      <!-- Floating Details -->
       <div class="hero__details">
         <div class="hero__detail hero__detail--location" id="heroDetail1">
           <span class="hero__detail-label">LOCATION</span>
@@ -197,13 +194,11 @@
         </div>
       </div>
 
-      <!-- Scroll Indicator -->
       <div class="hero__scroll" aria-hidden="true">
         <div class="hero__scroll-line"></div>
         <span class="hero__scroll-text">SCROLL</span>
       </div>
 
-      <!-- Section Number -->
       <div class="hero__section-number" aria-hidden="true">01</div>
     </section>
 
@@ -212,7 +207,6 @@
     <!-- ============================================== -->
     <section id="story" class="story" aria-label="About our hotel">
       <div class="story__inner">
-        <!-- Left Column: Text -->
         <div class="story__text">
           <span class="story__number" aria-hidden="true">02 / HOTEL</span>
           <div class="story__headline">
@@ -225,7 +219,6 @@
             our curated interiors and seamless digital experience create a sanctuary where
             modern travelers feel at home.
           </p>
-          <!-- Metadata Labels -->
           <div class="story__meta">
             <div class="story__meta-item">
               <span class="story__meta-line"></span>
@@ -245,7 +238,6 @@
           </div>
         </div>
 
-        <!-- Right Column: Lobby Image -->
         <div class="story__image-container">
           <div class="story__image-reveal">
             <div class="story__image-wrapper">
@@ -328,7 +320,6 @@
           </div>
         </div>
 
-        <!-- Room Cards -->
         <div class="rooms__grid">
 
           <!-- Room 01: Standard -->
@@ -479,38 +470,20 @@
           <div class="booking__line-wrap"><h2 class="booking__line">YOUR STAY<span class="booking__dot">.</span></h2></div>
         </div>
 
-        <!-- Booking Form -->
         <form class="booking__form" id="bookingForm" novalidate>
           <div class="booking__fields">
-            <!-- Check-in -->
             <div class="booking__field">
               <label for="checkIn" class="booking__label">CHECK-IN</label>
-              <input
-                type="date"
-                id="checkIn"
-                name="checkIn"
-                class="booking__input"
-                required
-                aria-required="true"
-              />
+              <input type="date" id="checkIn" name="checkIn" class="booking__input" required aria-required="true" />
               <div class="booking__field-line"></div>
             </div>
 
-            <!-- Check-out -->
             <div class="booking__field">
               <label for="checkOut" class="booking__label">CHECK-OUT</label>
-              <input
-                type="date"
-                id="checkOut"
-                name="checkOut"
-                class="booking__input"
-                required
-                aria-required="true"
-              />
+              <input type="date" id="checkOut" name="checkOut" class="booking__input" required aria-required="true" />
               <div class="booking__field-line"></div>
             </div>
 
-            <!-- Guests -->
             <div class="booking__field">
               <label for="guests" class="booking__label">GUESTS</label>
               <select id="guests" name="guests" class="booking__input booking__select" required aria-required="true">
@@ -523,7 +496,6 @@
               <div class="booking__field-line"></div>
             </div>
 
-            <!-- Room Type -->
             <div class="booking__field">
               <label for="roomType" class="booking__label">ROOM TYPE</label>
               <select id="roomType" name="roomType" class="booking__input booking__select" required aria-required="true">
@@ -536,7 +508,6 @@
             </div>
           </div>
 
-          <!-- Submit Button -->
           <button type="submit" class="btn btn--book" data-cursor="cta">
             <span class="btn__text">CHECK AVAILABILITY</span>
             <span class="btn__arrow">
@@ -557,7 +528,6 @@
   <!-- ================================================== -->
   <footer id="footer" class="footer" role="contentinfo">
     <div class="footer__inner">
-      <!-- Top row -->
       <div class="footer__top">
         <div class="footer__brand">
           <span class="footer__logo">HOTEL<span class="footer__logo-plus">+</span></span>
@@ -593,10 +563,8 @@
         </div>
       </div>
 
-      <!-- Divider -->
       <div class="footer__divider"></div>
 
-      <!-- Bottom row -->
       <div class="footer__bottom">
         <p class="footer__copy">&copy; 2024 HOTEL+. All rights reserved.</p>
         <p class="footer__credit">Developed by Mark Anthony Blanco — Hotel Booking Management System</p>
@@ -610,11 +578,194 @@
       </div>
     </div>
 
-    <!-- Large footer text -->
     <div class="footer__large-text" aria-hidden="true">
       <span>HOTEL+</span>
     </div>
   </footer>
+
+  <!-- ================================================== -->
+  <!-- AUTH MODAL BUBBLE (WITH LOGIN FORM)                -->
+  <!-- ================================================== -->
+  <div id="authModal" class="auth-modal" aria-hidden="true">
+    <div class="auth-modal__overlay"></div>
+    <div class="auth-modal__content">
+      <!-- Close button (X) -->
+      <button id="closeAuthModal" class="auth-modal__close" aria-label="Close modal" data-cursor="link">✕</button>
+
+      <div class="auth-modal__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+
+      <span class="auth-modal__number">01 / AUTH REQUIRED</span>
+      <h3 class="auth-modal__title">SIGN IN TO<br>CONTINUE<span class="auth-modal__dot">.</span></h3>
+      <p class="auth-modal__text">Log in to view availability and secure your stay.</p>
+      
+      <!-- In-Bubble Login Form -->
+      <form id="modalLoginForm" class="auth-modal__form" novalidate>
+        <div class="auth-modal__field">
+          <label class="auth-modal__label">EMAIL</label>
+          <input type="email" id="modalEmail" class="auth-modal__input" placeholder="user@hotelplus.com" required />
+          <div class="auth-modal__line"></div>
+        </div>
+
+        <div class="auth-modal__field">
+          <label class="auth-modal__label">PASSWORD</label>
+          <input type="password" id="modalPassword" class="auth-modal__input" placeholder="••••••••" required />
+          <div class="auth-modal__line"></div>
+        </div>
+
+        <div id="modalMessage" class="auth-modal__message"></div>
+
+        <button type="submit" class="btn btn--primary btn--full" data-cursor="cta">
+          <span class="btn__text">SIGN IN & CONTINUE</span>
+        </button>
+      </form>
+
+      <p class="auth-modal__footer-text">
+        Don't have an account? <a href="pages/login.html" class="auth-modal__link">Create one</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- LOGIN STATE & MODAL LOGIC SCRIPT                   -->
+  <!-- ================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const bookingForm = document.getElementById('bookingForm');
+      const authModal = document.getElementById('authModal');
+      const closeAuthModal = document.getElementById('closeAuthModal');
+      const modalLoginForm = document.getElementById('modalLoginForm');
+      const toggleModalPassword = document.getElementById('toggleModalPassword');
+      
+      const navbarLoginText = document.querySelector('.navbar__login span');
+      const mobileMenuLoginText = document.querySelector('.mobile-menu__login');
+
+      // 1. Function to update UI if user is logged in
+      function updateUIForLoggedInUser() {
+        if (navbarLoginText) navbarLoginText.textContent = 'MY ACCOUNT';
+        if (mobileMenuLoginText) mobileMenuLoginText.textContent = 'MY ACCOUNT →';
+      }
+
+      // Check login state on page load
+      if (localStorage.getItem('hotelplus_logged_in') === 'true') {
+        updateUIForLoggedInUser();
+      }
+
+      // 2. Function to process the actual room search
+      function continueBookingProcess() {
+        const btnText = bookingForm.querySelector('.btn__text');
+        const originalText = btnText.textContent;
+        
+        btnText.textContent = 'SEARCHING ROOMS...';
+        
+        setTimeout(function() {
+          btnText.textContent = originalText;
+          alert("Success! We found available rooms for your dates."); 
+          // Optional redirect: window.location.href = 'pages/rooms.html';
+        }, 1500);
+      }
+
+      // 3. Handle the main "Check Availability" click
+      if (bookingForm) {
+        bookingForm.addEventListener('submit', function (e) {
+          e.preventDefault(); 
+          
+          if (localStorage.getItem('hotelplus_logged_in') === 'true') {
+            continueBookingProcess();
+          } else {
+            if (authModal) {
+              authModal.classList.add('is-active');
+              authModal.setAttribute('aria-hidden', 'false');
+              setTimeout(() => document.getElementById('modalEmail')?.focus(), 250);
+            }
+          }
+        });
+      }
+
+      // 4. Handle the "Sign In" button INSIDE the bubble
+      if (modalLoginForm) {
+        modalLoginForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          
+          const email = document.getElementById('modalEmail').value.trim();
+          const pass = document.getElementById('modalPassword').value.trim();
+          const msgEl = document.getElementById('modalMessage');
+          const btnText = modalLoginForm.querySelector('.btn__text');
+          
+          msgEl.textContent = '';
+          msgEl.className = 'auth-modal__message';
+
+          if (!email || !pass) {
+            msgEl.textContent = 'Please enter email and password.';
+            msgEl.classList.add('auth-modal__message--error');
+            return;
+          }
+
+          btnText.textContent = 'AUTHENTICATING...';
+
+          setTimeout(function() {
+            msgEl.textContent = 'SUCCESS ✓';
+            msgEl.classList.add('auth-modal__message--success');
+            
+            localStorage.setItem('hotelplus_logged_in', 'true');
+            localStorage.setItem('hotelplus_user_email', email);
+            updateUIForLoggedInUser();
+
+            setTimeout(function() {
+              closeAuth();
+              btnText.textContent = 'SIGN IN & CONTINUE';
+              continueBookingProcess();
+            }, 800);
+
+          }, 1000);
+        });
+      }
+
+      // Close the modal consistently and restore accessibility state.
+      function closeAuth() {
+        if (!authModal) return;
+        authModal.classList.remove('is-active');
+        authModal.setAttribute('aria-hidden', 'true');
+      }
+
+      // Show/hide password.
+      if (toggleModalPassword) {
+        toggleModalPassword.addEventListener('click', function () {
+          const passwordInput = document.getElementById('modalPassword');
+          const showing = passwordInput.type === 'text';
+          passwordInput.type = showing ? 'password' : 'text';
+          toggleModalPassword.textContent = showing ? 'SHOW' : 'HIDE';
+          toggleModalPassword.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+          toggleModalPassword.setAttribute('aria-pressed', String(!showing));
+        });
+      }
+
+      // 5. Close Modal actions
+      if (closeAuthModal) {
+        closeAuthModal.addEventListener('click', function (e) {
+          e.preventDefault();
+          closeAuth();
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && authModal?.classList.contains('is-active')) {
+          closeAuth();
+        }
+      });
+
+      if (authModal) {
+        authModal.addEventListener('click', function(e) {
+          if (e.target.classList.contains('auth-modal__overlay')) {
+            closeAuth();
+          }
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>
