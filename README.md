@@ -6,10 +6,11 @@ an admin dashboard for managing incoming bookings.
 
 **Live demo:** https://hotelcebu.netlify.app/
 
-This is a static site (HTML/CSS/vanilla JS) with no backend — all
-accounts and bookings are stored in the browser's `localStorage`. It's
-built for demos, portfolios, and coursework rather than production use.
-See **Limitations** below before treating it as a real booking system.
+This is a static site (HTML/CSS/vanilla JS, no build step) backed by
+[Supabase](https://supabase.com) — Postgres for data, Supabase Auth for
+accounts, and Row Level Security for access control. There's no custom
+server; the browser talks to Supabase directly via the `supabase-js` CDN
+client.
 
 ---
 
@@ -18,17 +19,19 @@ See **Limitations** below before treating it as a real booking system.
 - **Marketing homepage** (`index.html`) with a quick-search booking form,
   room previews, and scroll-driven animations (GSAP + Lenis).
 - **Room catalog** (`pages/rooms.html`) with full details for Standard,
-  Deluxe, and Suite rooms.
+  Deluxe, and Suite rooms, sourced from the `rooms` table.
 - **Reservation flow** (`pages/booking.html` → `pages/confirmation.html`):
   pick dates and guests, enter guest details, and get a real booking
-  reference plus a confirmation page.
-- **Accounts** (`pages/login.html`): registration and login, with
-  sessions persisted in `localStorage`. Logged-in guests get their name
-  and email pre-filled at checkout.
+  reference plus a confirmation page. Works for both guests (no account
+  needed) and signed-in users.
+- **Accounts** (`pages/login.html`): registration and login via Supabase
+  Auth. Logged-in guests get their name and email pre-filled at
+  checkout, and can see their own past bookings.
 - **Admin dashboard** (`pages/admin.html`): protected page (redirects
-  anyone who isn't signed in as the admin), showing live stats,
+  anyone who isn't signed in as an admin), showing live stats,
   filterable/searchable reservations, booking detail + payment
-  breakdown, CSV export, and demo data seeding.
+  breakdown, CSV export, cancel/update actions, and demo data seeding —
+  all reading and writing real rows in Supabase.
 
 ## Project structure
 
@@ -49,24 +52,28 @@ js/
   main.js                    App bootstrap, homepage search form
   navigation.js               Navbar scroll state & mobile menu
   animations.js                GSAP/Lenis animation setup
-  rooms.js                    Room card interactions + room data helper
-  booking.js                  Shared booking state, pricing, localStorage I/O
-  auth.js                     Login / registration / session / admin guard
+  rooms.js                    Room card interactions + local room display data
+  booking.js                  Booking state, pricing, and Supabase `bookings`/
+                               `rooms` I/O (saveBooking, getBookings, etc.)
+  auth.js                     Supabase Auth wrapper — login / registration /
+                               session / admin guard
   auth-ui.js                   Syncs the navbar "LOGIN" link to session state
   components.js                Loads reusable HTML partials via fetch
-data/
-  rooms.json, bookings.json    Source-of-truth room catalog (bookings.json
-                               is a static example — actual bookings live in
-                               localStorage, not this file)
+  supabase-config.js           Supabase project URL + anon key — plug your
+                               own project's values in here
+database/
+  supabase-schema.sql          Full schema (rooms, profiles, bookings) +
+                               Row Level Security policies. Run once in the
+                               Supabase SQL editor to set up a new project.
 assets/                        Images and icons
 ```
 
 ## Running locally
 
-This is a static site — no build step or dependencies. Because a couple
-of pages `fetch()` local files (the footer partial, `data/rooms.json`),
-opening `index.html` directly via `file://` will hit browser CORS
-restrictions. Serve the folder instead, e.g.:
+This is a static site — no build step or npm dependencies. Because a
+couple of pages `fetch()` local files (the footer partial), opening
+`index.html` directly via `file://` will hit browser CORS restrictions.
+Serve the folder instead, e.g.:
 
 ```bash
 npx serve .
@@ -76,45 +83,71 @@ python3 -m http.server 8080
 
 then visit `http://localhost:PORT/index.html`.
 
+### Backend setup (required)
+
+The front end expects a Supabase project behind it:
+
+1. Create a project at [supabase.com](https://supabase.com).
+2. In the **SQL Editor**, run `database/supabase-schema.sql` — this
+   creates the `rooms`, `profiles`, and `bookings` tables, seeds the
+   three rooms, and sets up Row Level Security.
+3. In **Project Settings → API**, copy your **Project URL** and
+   **anon/public key** into `js/supabase-config.js`:
+   ```js
+   var SUPABASE_URL = 'https://your-project-ref.supabase.co';
+   var SUPABASE_ANON_KEY = 'your-anon-public-key';
+   ```
+4. To make an account an admin, sign up through `pages/login.html`,
+   then run in the SQL Editor:
+   ```sql
+   update public.profiles set is_admin = true
+   where id = (select id from auth.users where email = 'you@example.com');
+   ```
+
+The anon key is safe to commit/expose client-side — it has no power
+beyond what the RLS policies in `supabase-schema.sql` grant.
+
 ## Demo accounts
 
 | Role  | Email                  | Password       |
 |-------|-------------------------|----------------|
 | Guest | Register your own via **Login → Create Account** |
+| Admin | Register, then promote your account via the SQL snippet above |
 
-Guest accounts you register are stored in `localStorage` on your own
-browser, so they won't appear for other visitors or persist across
-different browsers/devices.
+Accounts are real Supabase Auth users shared across anyone using the
+deployed site — unlike a purely local demo, these persist across
+browsers and devices.
 
 ## How data is stored
 
-Everything is client-side, keyed in `localStorage`:
+Everything lives in Postgres, via Supabase:
 
-- `hotelplus_users` — registered guest accounts (demo only — **passwords
-  are stored in plain text**, see Limitations).
-- `hotelplus_logged_in` / `hotelplus_user_email` / `hotelplus_user_role` /
-  `hotelplus_user_name` — the current session.
-- `hotel_bookings` — every reservation made through the booking flow;
-  read by both the confirmation page and the admin dashboard.
+- **`auth.users`** — accounts and credentials, managed entirely by
+  Supabase Auth (passwords are hashed, not stored in plain text).
+- **`public.profiles`** — one row per user, holding just the `is_admin`
+  flag used to gate the dashboard.
+- **`public.rooms`** — the three room types (Standard/Deluxe/Suite) and
+  their details.
+- **`public.bookings`** — every reservation, with `user_id` set for
+  signed-in bookings and left `null` for guest checkouts.
 
-Clearing your browser storage (or using a different browser/device)
-resets all of the above.
+Row Level Security enforces who can read/write what: anyone can browse
+rooms and create a booking, a signed-in user can only see/update their
+own bookings, and only accounts with `is_admin = true` can see, update,
+or delete every booking.
 
 ## Limitations
 
-This project intentionally has no server, database, or payment
-processor, so:
-
-- **Not secure.** Passwords are stored in plain text in `localStorage`
-  and are visible to anyone with access to the browser's dev tools.
-  Do not reuse a real password here.
-- **Not multi-user.** Bookings and accounts live only in the browser
-  that created them — there's no shared/central database.
 - **No real availability checking.** Room types don't have a fixed
-  inventory count, so double-bookings aren't prevented.
+  inventory count, so double-bookings aren't prevented at the database
+  level.
 - **No real payments or emails.** "Confirmation emails" mentioned in the
-  UI are simulated copy only.
+  UI are simulated copy only — no email provider is wired up.
+- **Email confirmation is configurable, not enforced by the app.**
+  Whether new signups need to verify their email before signing in is a
+  toggle in the Supabase dashboard (Authentication → Providers → Email),
+  not something the front end decides.
 
-These are natural next steps if this were turned into a production app
-(a real backend + database, hashed passwords, server-side sessions,
-inventory/availability logic, and a payment provider).
+Natural next steps for a production version: real availability/
+inventory logic, a payment provider integration, and transactional
+email (e.g. via a Supabase Edge Function or a service like Resend).
