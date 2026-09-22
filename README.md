@@ -80,7 +80,6 @@ then visit `http://localhost:PORT/index.html`.
 
 | Role  | Email                  | Password       |
 |-------|-------------------------|----------------|
-| Admin | `admin@hotelplus.com`   | `m0987654321`  |
 | Guest | Register your own via **Login → Create Account** |
 
 Guest accounts you register are stored in `localStorage` on your own
