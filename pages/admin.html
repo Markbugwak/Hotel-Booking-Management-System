@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL+ | Luxury Admin Dashboard</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-main: #0a0b0d;
+      --bg-card: #121418;
+      --bg-card-hover: #191c22;
+      --bg-surface: #181b20;
+      --border-color: rgba(197, 168, 128, 0.18);
+      --border-light: rgba(255, 255, 255, 0.08);
+      
+      --accent-gold: #c5a880;
+      --accent-gold-light: #dfc196;
+      --accent-gold-glow: rgba(197, 168, 128, 0.25);
+      
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      
+      --status-confirmed-bg: rgba(16, 185, 129, 0.12);
+      --status-confirmed-text: #34d399;
+      --status-confirmed-border: rgba(16, 185, 129, 0.3);
+      
+      --status-checkedin-bg: rgba(59, 130, 246, 0.12);
+      --status-checkedin-text: #60a5fa;
+      --status-checkedin-border: rgba(59, 130, 246, 0.3);
+
+      --status-cancelled-bg: rgba(239, 68, 68, 0.12);
+      --status-cancelled-text: #f87171;
+      --status-cancelled-border: rgba(239, 68, 68, 0.3);
+
+      --status-pending-bg: rgba(245, 158, 11, 0.12);
+      --status-pending-text: #fbbf24;
+      --status-pending-border: rgba(245, 158, 11, 0.3);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(197, 168, 128, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(197, 168, 128, 0.02) 0%, transparent 50%);
+    }
+
+    h1, h2, h3, h4, h5, .font-heading {
+      font-family: 'Manrope', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-main);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232730;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-gold);
+    }
+
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--accent-gold);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+      z-index: 9999;
+      display: none;
+    }
+    @media (pointer: fine) {
+      .custom-cursor { display: block; }
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 11, 13, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 1rem 2rem;
+      transition: var(--transition-smooth);
+    }
+
+    .navbar__inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar__logo {
+      text-decoration: none;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar__logo-plus {
+      color: var(--accent-gold);
+      margin-left: 2px;
+    }
+
+    .navbar__nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar__links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .navbar__link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      transition: var(--transition-fast);
+      position: relative;
+      padding: 0.4rem 0;
+    }
+
+    .navbar__link:hover, .navbar__link.is-active {
+      color: var(--accent-gold);
+    }
+
+    .navbar__link.is-active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent-gold);
+      box-shadow: 0 0 8px var(--accent-gold);
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-light);
+    }
+
+    .user-badge__avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-gold), #8a6f47);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    .user-badge__name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .user-badge__status {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #10b981;
+    }
+
+    .admin-page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem 2rem;
+    }
+
+    .admin-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .admin-header__tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .admin-header__tag::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+    }
+
+    .admin-header__title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    .admin-header__title span {
+      color: var(--accent-gold);
+    }
+
+    .admin-header__subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.4rem;
+      max-width: 600px;
+    }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      border: 1px solid transparent;
+      outline: none;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn--primary {
+      background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
+      color: #0b0c0e;
+      box-shadow: 0 4px 15px rgba(197, 168, 128, 0.2);
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(197, 168, 128, 0.35);
+      background: linear-gradient(135deg, #ebd2ab, var(--accent-gold-light));
+    }
+
+    .btn--outline {
+      background: rgba(18, 20, 24, 0.6);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+
+    .btn--outline:hover {
+      background: rgba(197, 168, 128, 0.1);
+      border-color: var(--accent-gold);
+      color: var(--accent-gold-light);
+      transform: translateY(-2px);
+    }
+
+    .btn--danger {
+      background: rgba(239, 68, 68, 0.08);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+
+    .btn--danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #fff;
+    }
+
+    .btn--icon-only {
+      padding: 0.65rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 10px 30px -10px rgba(197, 168, 128, 0.15);
+      background: var(--bg-card-hover);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      opacity: 0.3;
+      transition: var(--transition-fast);
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-card__label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .stat-card__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: rgba(197, 168, 128, 0.08);
+      border: 1px solid rgba(197, 168, 128, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+    }
+
+    .stat-card__value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .stat-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .stat-card__trend {
+      color: #34d399;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .filter-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-xl);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .filter-pill:hover {
+      color: var(--text-main);
+      border-color: rgba(197, 168, 128, 0.3);
+    }
+
+    .filter-pill.is-active {
+      background: var(--accent-gold);
+      color: #0b0c0e;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(197, 168, 128, 0.3);
+    }
+
+    .search-box {
+      position: relative;
+      flex-grow: 1;
+      max-width: 380px;
+      min-width: 240px;
+    }
+
+    .search-box__input {
+      width: 100%;
+      background: rgba(10, 11, 13, 0.7);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      transition: var(--transition-fast);
+    }
+
+    .search-box__input:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 10px rgba(197, 168, 128, 0.2);
+    }
+
+    .search-box__icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .admin-table th {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 1.1rem 1.25rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-light);
+      white-space: nowrap;
+    }
+
+    .admin-table td {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+      color: var(--text-main);
+      transition: var(--transition-fast);
+    }
+
+    .admin-table tbody tr {
+      transition: var(--transition-fast);
+    }
+
+    .admin-table tbody tr:hover {
+      background: rgba(197, 168, 128, 0.04);
+    }
+
+    .booking-id {
+      font-family: monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      background: rgba(197, 168, 128, 0.08);
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(197, 168, 128, 0.2);
+      display: inline-block;
+    }
+
+    .guest-info__name {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .guest-info__email {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .room-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-sm);
+      text-transform: capitalize;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.65rem;
+      border-radius: var(--radius-xl);
+      text-transform: uppercase;
+    }
+
+    .status-badge--confirmed {
+      background: var(--status-confirmed-bg);
+      color: var(--status-confirmed-text);
+      border: 1px solid var(--status-confirmed-border);
+    }
+
+    .status-badge--checked-in {
+      background: var(--status-checkedin-bg);
+      color: var(--status-checkedin-text);
+      border: 1px solid var(--status-checkedin-border);
+    }
+
+    .status-badge--cancelled {
+      background: var(--status-cancelled-bg);
+      color: var(--status-cancelled-text);
+      border: 1px solid var(--status-cancelled-border);
+    }
+
+    .status-badge--pending {
+      background: var(--status-pending-bg);
+      color: var(--status-pending-text);
+      border: 1px solid var(--status-pending-border);
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-action {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-action:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: rgba(197, 168, 128, 0.08);
+    }
+
+    .btn-action--danger:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    .table-empty {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .table-empty__icon {
+      font-size: 3rem;
+      color: var(--accent-gold);
+      opacity: 0.6;
+      margin-bottom: 1rem;
+    }
+
+    .table-empty__title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .table-empty__text {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 400px;
+      margin: 0 auto 1.5rem auto;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .modal-overlay.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: #14171d;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      transform: scale(0.95) translateY(10px);
+      transition: var(--transition-smooth);
+    }
+
+    .modal-overlay.is-active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header {
+      padding: 1.5rem 1.75rem;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: var(--transition-fast);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-body {
+      padding: 1.75rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 580px) {
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+
+    .detail-item__label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-item__value {
+      font-size: 0.95rem;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .modal-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      margin: 1.5rem 0 0.8rem 0;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .breakdown-box {
+      background: rgba(10, 11, 13, 0.6);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .breakdown-row--total {
+      border-top: 1px solid var(--border-light);
+      margin-top: 0.5rem;
+      padding-top: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .modal-footer {
+      padding: 1.25rem 1.75rem;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #181b20;
+      border: 1px solid var(--accent-gold);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.25rem;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transform: translateX(120%);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: auto;
+      max-width: 380px;
+    }
+
+    .toast.is-visible {
+      transform: translateX(0);
+    }
+
+    .toast__icon {
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+    }
+
+    /* Responsive adjusts */
+    @media (max-width: 768px) {
+      .navbar { padding: 1rem; }
+      .admin-page { padding: 1.5rem 1rem; }
+      .admin-header__title { font-size: 1.8rem; }
+      .controls-bar { flex-direction: column; align-items: stretch; }
+      .search-box { max-width: 100%; }
+      .toast-container { right: 1rem; left: 1rem; bottom: 1rem; }
+      .toast { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth guard: loaded blocking (no defer) so unauthorized visitors
+       are redirected before the dashboard ever renders. -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    if (window.HotelAuth) { HotelAuth.protectAdminPage(); }
+  </script>
+
+  <div id="cursor" class="custom-cursor" aria-hidden="true"></div>
+
+  <!-- Header Navigation -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        HOTEL<span class="navbar__logo-plus">+</span>
+      </a>
+      <nav class="navbar__nav">
+        <ul class="navbar__links">
+          <li><a href="rooms.html" class="navbar__link">ROOMS</a></li>
+          <li><a href="booking.html" class="navbar__link">BOOK</a></li>
+          <li><a href="admin.html" class="navbar__link is-active">ADMIN</a></li>
+        </ul>
+        <div class="user-badge" id="userBadge" title="Click to log out" style="cursor:pointer;">
+          <div class="user-badge__avatar" id="userBadgeAvatar">A</div>
+          <span class="user-badge__name" id="userBadgeName">Manager</span>
+          <div class="user-badge__status" title="System Online"></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-page">
+    <!-- Header Section -->
+    <div class="admin-header">
+      <div>
+        <div class="admin-header__tag">MANAGEMENT PANEL</div>
+        <h1 class="admin-header__title">RESERVATIONS<span>.</span></h1>
+        <p class="admin-header__subtitle">Manage real-time guest bookings, filter room metrics, view financial summaries, and export data.</p>
+      </div>
+      <div class="admin-actions">
+        <button id="refreshBtn" class="btn btn--outline" title="Refresh Dashboard Data">
+          <span>↻</span> REFRESH
+        </button>
+        <button id="seedBtn" class="btn btn--outline" title="Add Demo Data">
+          <span>+</span> ADD MOCK DATA
+        </button>
+        <button id="exportBtn" class="btn btn--primary" title="Export CSV File">
+          <span>↓</span> EXPORT CSV
+        </button>
+        <button id="clearAllBtn" class="btn btn--danger" title="Clear All Bookings">
+          <span>🗑</span> CLEAR ALL
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__top">
+          <span class="stat-card__label">Total Reservations</span>
+          <div class="stat-card__icon">📋</div>
+        </div>
+        <div class="stat-card__value" id="statBookings">0</div>
+        <div class="stat-card__meta">
+          <span class="stat-card__trend">↑ 12%</span> vs last month
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__top">
+          <span class="stat-card__label">Total Revenue</span>
+          <div class="stat-card__icon">₱</div>
+        </div>
+        <div class="stat-card__value" id="statRevenue">₱0</div>
+        <div class="stat-card__meta">
+          <span class="stat-card__trend">↑ 18%</span> gross earnings
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__top">
+          <span class="stat-card__label">Total Guests</span>
+          <div class="stat-card__icon">👥</div>
+        </div>
+        <div class="stat-card__value" id="statGuests">0</div>
+        <div class="stat-card__meta">
+          <span>Avg. 2.4 guests / stay</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__top">
+          <span class="stat-card__label">Avg. Nights Stay</span>
+          <div class="stat-card__icon">🌙</div>
+        </div>
+        <div class="stat-card__value" id="statAvgNights">0</div>
+        <div class="stat-card__meta">
+          <span>High occupancy period</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-bar">
+      <div class="filter-pills">
+        <span style="font-size: 0.75rem; font-weight:700; color:var(--text-muted); margin-right: 0.4rem;">ROOM:</span>
+        <button class="filter-pill is-active" data-filter="all">ALL ROOMS</button>
+        <button class="filter-pill" data-filter="standard">STANDARD</button>
+        <button class="filter-pill" data-filter="deluxe">DELUXE</button>
+        <button class="filter-pill" data-filter="suite">SUITE</button>
+      </div>
+
+      <div class="search-box">
+        <span class="search-box__icon">🔍</span>
+        <input type="text" id="searchInput" class="search-box__input" placeholder="Search ID, guest name, or email..." />
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>BOOKING ID</th>
+              <th>GUEST DETAILS</th>
+              <th>ROOM</th>
+              <th>CHECK-IN / OUT</th>
+              <th>NIGHTS</th>
+              <th>GUESTS</th>
+              <th>TOTAL PRICE</th>
+              <th>STATUS</th>
+              <th style="text-align: right;">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody">
+            <!-- Dynamically populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Booking Details Modal -->
+  <div id="detailsModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Reservation Details</div>
+        <button class="modal-close" onclick="closeModal('detailsModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Dynamically injected modal content -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--outline" onclick="closeModal('detailsModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Confirmation Dialog Modal -->
+  <div id="confirmModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <div class="modal-title" id="confirmModalTitle">Confirm Action</div>
+        <button class="modal-close" onclick="closeModal('confirmModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmModalMessage" style="color: var(--text-muted); font-size: 0.95rem;"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn--outline" onclick="closeModal('confirmModal')">Cancel</button>
+        <button id="confirmModalBtn" class="btn btn--danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var currentFilter = 'all';
+      var searchQuery = '';
+      
+      // Canonical nightly rates (must match data/rooms.json)
+      var ROOM_PRICES = {
+        standard: 2500,
+        deluxe: 4500,
+        suite: 7500
+      };
+
+      // Reflect the signed-in admin's identity in the header badge,
+      // and let clicking it log out.
+      (function initUserBadge() {
+        if (!window.HotelAuth) return;
+        HotelAuth.ready.then(function () {
+          var user = HotelAuth.getCurrentUser();
+          var nameEl = document.getElementById('userBadgeName');
+          var avatarEl = document.getElementById('userBadgeAvatar');
+          var label = user.name || (user.email ? user.email.split('@')[0] : 'Admin');
+          if (nameEl) nameEl.textContent = label;
+          if (avatarEl) avatarEl.textContent = label.charAt(0).toUpperCase();
+        });
+
+        var badge = document.getElementById('userBadge');
+        if (badge) {
+          badge.addEventListener('click', function () {
+            if (window.confirm('Log out of the admin dashboard?')) {
+              HotelAuth.logout();
+            }
+          });
+        }
+      })();
+
+      // Mock Data Generator (used only by the "Populate Mock Data" button —
+      // inserted into Supabase on demand, not auto-seeded on an empty table)
+      var INITIAL_MOCK_DATA = [
+        {
+          id: 'HPLUS-8921',
+          guestName: 'Maria Santos',
+          guestEmail: 'maria.santos@gmail.com',
+          phone: '+63 917 555 0192',
+          roomType: 'suite',
+          checkIn: '2026-10-12',
+          checkOut: '2026-10-16',
+          guests: 2,
+          total: 30000,
+          status: 'confirmed',
+          specialRequests: 'High floor ocean view, complimentary champagne.'
+        },
+        {
+          id: 'HPLUS-8922',
+          guestName: 'Alexander Wright',
+          guestEmail: 'a.wright@corporate.com',
+          phone: '+1 415 892 3310',
+          roomType: 'deluxe',
+          checkIn: '2026-10-14',
+          checkOut: '2026-10-18',
+          guests: 1,
+          total: 18000,
+          status: 'checked-in',
+          specialRequests: 'Late check-in scheduled around 11:30 PM.'
+        },
+        {
+          id: 'HPLUS-8923',
+          guestName: 'Katelyn Chen',
+          guestEmail: 'katelyn.chen@tech.io',
+          phone: '+65 9123 4567',
+          roomType: 'standard',
+          checkIn: '2026-10-15',
+          checkOut: '2026-10-17',
+          guests: 2,
+          total: 5000,
+          status: 'confirmed',
+          specialRequests: 'Quiet room away from elevators.'
+        },
+        {
+          id: 'HPLUS-8924',
+          guestName: 'Eduardo Reyes',
+          guestEmail: 'ereyes@lawfirm.ph',
+          phone: '+63 918 222 9988',
+          roomType: 'suite',
+          checkIn: '2026-10-20',
+          checkOut: '2026-10-25',
+          guests: 3,
+          total: 37500,
+          status: 'pending',
+          specialRequests: 'Airport transfer required at 2:00 PM.'
+        },
+        {
+          id: 'HPLUS-8925',
+          guestName: 'Sophie Laurent',
+          guestEmail: 'sophie.laurent@paris.fr',
+          phone: '+33 6 12 34 56 78',
+          roomType: 'deluxe',
+          checkIn: '2026-11-01',
+          checkOut: '2026-11-05',
+          guests: 2,
+          total: 18000,
+          status: 'confirmed',
+          specialRequests: 'Honeymoon package add-on.'
+        }
+      ];
+
+      // Normalizes a raw booking (from window.Booking, camelCase fields
+      // matching the `bookings` table) into the shape this dashboard's
+      // rendering code expects — same normalization the old localStorage
+      // version did, minus anything only needed for the fake-data era.
+      function normalize(b, index) {
+        var checkInDate = new Date(b.checkIn || Date.now());
+        var checkOutDate = new Date(b.checkOut || Date.now() + 86400000);
+        var nights = Math.max(1, Math.round((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24))) || 1;
+        var roomType = (b.roomType || 'standard').toLowerCase();
+
+        return {
+          id: b.id || ('HPLUS-' + (8900 + index)),
+          guestName: b.guestName || 'Guest User',
+          guestEmail: b.guestEmail || 'guest@example.com',
+          phone: b.guestPhone || '+63 900 000 0000',
+          roomType: roomType,
+          checkIn: b.checkIn || '2026-10-01',
+          checkOut: b.checkOut || '2026-10-02',
+          nights: nights,
+          guests: parseInt(b.guests || 1, 10),
+          total: b.total || (ROOM_PRICES[roomType] * nights),
+          status: (b.status || 'confirmed').toLowerCase(),
+          specialRequests: b.specialRequests || 'None'
+        };
+      }
+
+      // Returns a Promise<array> of every booking this admin can see
+      // (RLS grants admins every row; see database/supabase-schema.sql).
+      function getBookings() {
+        return window.Booking.getBookings().then(function (bookings) {
+          return bookings.map(normalize);
+        });
+      }
+
+      // Inserts the demo dataset into Supabase — used only by the
+      // "Populate Mock Data" button, for demoing the dashboard against
+      // real rows without waiting on actual reservations to come in.
+      function seedMockData() {
+        var inserts = INITIAL_MOCK_DATA.map(function (b) {
+          return window.Booking.saveBooking({
+            roomType: b.roomType,
+            checkIn: b.checkIn,
+            checkOut: b.checkOut,
+            guests: b.guests,
+            guestName: b.guestName,
+            guestEmail: b.guestEmail,
+            guestPhone: b.phone,
+            specialRequests: b.specialRequests,
+            total: b.total,
+            status: b.status
+          });
+        });
+        return Promise.all(inserts);
+      }
+
+      function formatCurrency(amount) {
+        return '₱' + Number(amount || 0).toLocaleString('en-PH');
+      }
+
+      function showToast(message, type) {
+        var container = document.getElementById('toastContainer');
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = '<span class="toast__icon">✓</span><span>' + message + '</span>';
+        container.appendChild(toast);
+
+        setTimeout(function () { toast.classList.add('is-visible'); }, 10);
+        setTimeout(function () {
+          toast.classList.remove('is-visible');
+          setTimeout(function () { toast.remove(); }, 400);
+        }, 3000);
+      }
+
+      function customConfirm(title, message, onConfirm) {
+        var modal = document.getElementById('confirmModal');
+        document.getElementById('confirmModalTitle').textContent = title;
+        document.getElementById('confirmModalMessage').textContent = message;
+        
+        var confirmBtn = document.getElementById('confirmModalBtn');
+        var newBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newBtn, confirmBtn);
+
+        newBtn.addEventListener('click', function () {
+          closeModal('confirmModal');
+          onConfirm();
+        });
+
+        modal.classList.add('is-active');
+      }
+
+      window.closeModal = function(id) {
+        document.getElementById(id).classList.remove('is-active');
+      };
+
+      function renderDashboard() {
+        return getBookings().then(function (allBookings) {
+        renderDashboardWith(allBookings);
+        }).catch(function (err) {
+          console.error(err);
+          showToast('Could not load reservations.');
+        });
+      }
+
+      function renderDashboardWith(allBookings) {
+        // 1. Calculate Stats based on ALL bookings
+        var totalRev = 0;
+        var totalGuestsCount = 0;
+        var totalNightsCount = 0;
+
+        allBookings.forEach(function (b) {
+          totalRev += b.total;
+          totalGuestsCount += b.guests;
+          totalNightsCount += b.nights;
+        });
+
+        document.getElementById('statBookings').textContent = allBookings.length;
+        document.getElementById('statRevenue').textContent = formatCurrency(totalRev);
+        document.getElementById('statGuests').textContent = totalGuestsCount;
+        document.getElementById('statAvgNights').textContent = allBookings.length > 0 ? (totalNightsCount / allBookings.length).toFixed(1) + 'd' : '0d';
+
+        // 2. Filter Logic
+        var filtered = allBookings.filter(function (b) {
+          var matchesRoom = currentFilter === 'all' || b.roomType === currentFilter;
+          var query = searchQuery.toLowerCase().trim();
+          var matchesSearch = !query || 
+            b.id.toLowerCase().includes(query) || 
+            b.guestName.toLowerCase().includes(query) || 
+            b.guestEmail.toLowerCase().includes(query);
+
+          return matchesRoom && matchesSearch;
+        });
+
+        // 3. Render Table
+        var tbody = document.getElementById('adminTableBody');
+        tbody.innerHTML = '';
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9">' +
+            '<div class="table-empty">' +
+            '<div class="table-empty__icon">✧</div>' +
+            '<div class="table-empty__title">No Reservations Found</div>' +
+            '<div class="table-empty__text">No bookings match your selected room filters or search query.</div>' +
+            '</div></td></tr>';
+          return;
+        }
+
+        filtered.forEach(function (b) {
+          var tr = document.createElement('tr');
+
+          var statusClass = 'status-badge--confirmed';
+          if (b.status === 'checked-in') statusClass = 'status-badge--checked-in';
+          if (b.status === 'cancelled') statusClass = 'status-badge--cancelled';
+          if (b.status === 'pending') statusClass = 'status-badge--pending';
+
+          tr.innerHTML = 
+            '<td><span class="booking-id">' + b.id + '</span></td>' +
+            '<td>' +
+              '<div class="guest-info__name">' + b.guestName + '</div>' +
+              '<div class="guest-info__email">' + b.guestEmail + '</div>' +
+            '</td>' +
+            '<td><span class="room-badge">🏛 ' + b.roomType + '</span></td>' +
+            '<td>' +
+              '<div style="font-size:0.82rem;">In: ' + b.checkIn + '</div>' +
+              '<div style="font-size:0.78rem; color:var(--text-muted);">Out: ' + b.checkOut + '</div>' +
+            '</td>' +
+            '<td>' + b.nights + ' night' + (b.nights > 1 ? 's' : '') + '</td>' +
+            '<td>' + b.guests + ' guest' + (b.guests > 1 ? 's' : '') + '</td>' +
+            '<td style="font-weight:700; color:var(--accent-gold);">' + formatCurrency(b.total) + '</td>' +
+            '<td><span class="status-badge ' + statusClass + '">' + b.status + '</span></td>' +
+            '<td style="text-align: right;">' +
+              '<div class="table-actions" style="justify-content: flex-end;">' +
+                '<button class="btn-action view-btn" data-id="' + b.id + '">View</button>' +
+                '<button class="btn-action btn-action--danger cancel-btn" data-id="' + b.id + '">Cancel</button>' +
+              '</div>' +
+            '</td>';
+
+          tbody.appendChild(tr);
+        });
+
+        // 4. Attach Action Handlers
+        document.querySelectorAll('.view-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            openDetailsModal(this.getAttribute('data-id'));
+          });
+        });
+
+        document.querySelectorAll('.cancel-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var id = this.getAttribute('data-id');
+            customConfirm('Cancel Reservation', 'Are you sure you want to cancel booking ' + id + '?', function () {
+              window.Booking.updateBookingStatus(id, 'cancelled').then(function () {
+                renderDashboard();
+                showToast('Reservation ' + id + ' cancelled successfully.');
+              }).catch(function (err) {
+                console.error(err);
+                showToast('Could not cancel that reservation.');
+              });
+            });
+          });
+        });
+      }
+
+      function openDetailsModal(bookingId) {
+        getBookings().then(function (bookings) {
+        var b = bookings.find(function (item) { return item.id === bookingId; });
+        if (!b) return;
+
+        var nightlyRate = ROOM_PRICES[b.roomType] || 6000;
+        var subtotal = nightlyRate * b.nights;
+        var tax = Math.round(subtotal * 0.12);
+
+        var html = 
+          '<div class="detail-grid">' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Booking ID</div>' +
+              '<div class="detail-item__value" style="color:var(--accent-gold); font-family:monospace;">' + b.id + '</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Status</div>' +
+              '<div class="detail-item__value" style="text-transform:uppercase; font-weight:700;">' + b.status + '</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Guest Name</div>' +
+              '<div class="detail-item__value">' + b.guestName + '</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Contact Email</div>' +
+              '<div class="detail-item__value">' + b.guestEmail + '</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Phone Number</div>' +
+              '<div class="detail-item__value">' + b.phone + '</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Room Type</div>' +
+              '<div class="detail-item__value" style="text-transform:capitalize;">' + b.roomType + '</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Check-in / Check-out</div>' +
+              '<div class="detail-item__value">' + b.checkIn + ' → ' + b.checkOut + ' (' + b.nights + ' nights)</div>' +
+            '</div>' +
+            '<div class="detail-item">' +
+              '<div class="detail-item__label">Guests</div>' +
+              '<div class="detail-item__value">' + b.guests + ' Guest(s)</div>' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="modal-section-title">Special Requests</div>' +
+          '<div style="background:rgba(255,255,255,0.02); padding:0.8rem; border-radius:var(--radius-sm); border:1px solid var(--border-light); font-size:0.88rem; color:var(--text-muted);">' +
+            (b.specialRequests || 'No special requests submitted.') +
+          '</div>' +
+
+          '<div class="modal-section-title">Payment Breakdown</div>' +
+          '<div class="breakdown-box">' +
+            '<div class="breakdown-row"><span>Room Rate (' + b.nights + ' nights @ ' + formatCurrency(nightlyRate) + ')</span><span>' + formatCurrency(subtotal) + '</span></div>' +
+            '<div class="breakdown-row"><span>Taxes & Service Fees (12%)</span><span>' + formatCurrency(tax) + '</span></div>' +
+            '<div class="breakdown-row breakdown-row--total"><span>Total Price</span><span style="color:var(--accent-gold);">' + formatCurrency(b.total) + '</span></div>' +
+          '</div>';
+
+        document.getElementById('modalBody').innerHTML = html;
+        document.getElementById('detailsModal').classList.add('is-active');
+        }).catch(function (err) {
+          console.error(err);
+          showToast('Could not load that reservation.');
+        });
+      }
+
+      function exportToCSV() {
+        getBookings().then(function (bookings) {
+        if (bookings.length === 0) {
+          showToast('No booking data available to export.');
+          return;
+        }
+
+        var csvRows = [];
+        csvRows.push(['Booking ID', 'Guest Name', 'Email', 'Phone', 'Room Type', 'Check In', 'Check Out', 'Nights', 'Guests', 'Total Price (PHP)', 'Status'].join(','));
+
+        bookings.forEach(function (b) {
+          csvRows.push([
+            '"' + b.id + '"',
+            '"' + b.guestName.replace(/"/g, '""') + '"',
+            '"' + b.guestEmail + '"',
+            '"' + b.phone + '"',
+            '"' + b.roomType + '"',
+            '"' + b.checkIn + '"',
+            '"' + b.checkOut + '"',
+            b.nights,
+            b.guests,
+            b.total,
+            '"' + b.status + '"'
+          ].join(','));
+        });
+
+        var blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'HOTEL_PLUS_Reservations_' + new Date().toISOString().slice(0, 10) + '.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('Reservations CSV downloaded!');
+        }).catch(function (err) {
+          console.error(err);
+          showToast('Could not export reservations.');
+        });
+      }
+
+      // Filter Buttons
+      document.querySelectorAll('.filter-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          document.querySelectorAll('.filter-pill').forEach(function (p) { p.classList.remove('is-active'); });
+          this.classList.add('is-active');
+          currentFilter = this.getAttribute('data-filter');
+          renderDashboard();
+        });
+      });
+
+      // Search Box Input
+      document.getElementById('searchInput').addEventListener('input', function (e) {
+        searchQuery = e.target.value;
+        renderDashboard();
+      });
+
+      // Action Buttons
+      document.getElementById('refreshBtn').addEventListener('click', function () {
+        renderDashboard();
+        showToast('Dashboard refreshed');
+      });
+
+      document.getElementById('seedBtn').addEventListener('click', function () {
+        seedMockData().then(function () {
+          renderDashboard();
+          showToast('Mock data populated');
+        }).catch(function (err) {
+          console.error(err);
+          showToast('Could not populate mock data.');
+        });
+      });
+
+      document.getElementById('exportBtn').addEventListener('click', exportToCSV);
+
+      document.getElementById('clearAllBtn').addEventListener('click', function () {
+        customConfirm('Clear All Bookings', 'Are you sure you want to erase ALL reservation records? This action cannot be undone.', function () {
+          window.Booking.deleteAllBookings().then(function () {
+            renderDashboard();
+            showToast('All bookings cleared.');
+          }).catch(function (err) {
+            console.error(err);
+            showToast('Could not clear reservations.');
+          });
+        });
+      });
+
+      // Custom Mouse Cursor Effect
+      var cursor = document.getElementById('cursor');
+      document.addEventListener('mousemove', function (e) {
+        if (cursor) {
+          cursor.style.left = e.clientX + 'px';
+          cursor.style.top = e.clientY + 'px';
+        }
+      });
+
+      // Initial Render
+      renderDashboard();
+    });
+  </script>
+</body>
+</html>

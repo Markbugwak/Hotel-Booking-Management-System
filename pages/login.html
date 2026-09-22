@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/auth.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL+ | Login</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/animations.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  
+  <!-- GSAP & Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <!-- Assuming your navigation script handles the mobile menu and navbar scroll -->
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/auth-ui.js" defer></script>
+  
+  <style>
+    /* Reset & Brand Variables (Kept for the login form elements) */
+    :root {
+      --bg-dark: #0a0b0d;
+      --accent-gold: #c5a880;
+      --accent-gold-hover: #d4b890;
+      --text-main: #ffffff;
+      --text-muted: #9aa0a6;
+      --border-color: rgba(255, 255, 255, 0.12);
+      --font-main: 'Inter', sans-serif;
+      --font-heading: 'Manrope', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .login-page {
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+    }
+    .login-page__inner {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Left Hero Image */
+    .login-page__image {
+      flex: 1.15;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 5rem 4.5rem;
+      min-height: 100vh;
+    }
+    .login-page__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: kenBurns 22s infinite alternate ease-in-out;
+    }
+    @keyframes kenBurns {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.06); }
+    }
+    .login-page__image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 11, 13, 0.25) 0%,
+        rgba(10, 11, 13, 0.5) 45%,
+        rgba(10, 11, 13, 0.92) 100%
+      );
+    }
+
+    /* Hero Headline */
+    .login-page__image-text {
+      position: relative;
+      z-index: 5;
+      max-width: 520px;
+    }
+    .login-page__location {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+    .location__dot {
+      width: 7px;
+      height: 7px;
+      background-color: var(--accent-gold);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-gold);
+    }
+    .location__text {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 3.5px;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+    }
+    .login-page__image-headline {
+      font-family: var(--font-heading);
+      font-size: 3.8rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .login-page__image-headline span {
+      color: var(--accent-gold);
+    }
+    .login-page__image-sub {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+
+    /* Right Form Area */
+    .login-page__form-container {
+      flex: 1;
+      background-color: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 4rem 4rem;
+      position: relative;
+      z-index: 10;
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .login-page__form-inner {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+    }
+
+    /* Form States */
+    .login-form {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .login-form.is-active {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    .login-form__number {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      color: var(--accent-gold);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .login-form__title {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+    .login-form__dot {
+      color: var(--accent-gold);
+    }
+    .login-form__subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2.25rem;
+    }
+
+    /* Form Fields */
+    .login-form__fields {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+    .login-form__field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-form__label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      transition: color 0.3s;
+    }
+    .login-form__input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      padding: 0.5rem 0;
+      width: 100%;
+    }
+    .login-form__field-line {
+      height: 1px;
+      background-color: var(--border-color);
+      width: 100%;
+      transition: background-color 0.3s, height 0.3s;
+    }
+    .login-form__field:focus-within .login-form__field-line {
+      background-color: var(--accent-gold);
+      height: 2px;
+      box-shadow: 0 0 10px rgba(197, 168, 128, 0.4);
+    }
+    .login-form__field:focus-within .login-form__label {
+      color: var(--accent-gold);
+    }
+
+    /* Form Options */
+    .login-form__options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+    .login-form__checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .login-form__checkbox input {
+      accent-color: var(--accent-gold);
+    }
+    .login-form__forgot {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .login-form__forgot:hover {
+      color: var(--accent-gold);
+    }
+
+    /* Integrated Feedback Banner */
+    .form-message {
+      font-size: 0.8rem;
+      margin-top: 1rem;
+      min-height: 1.4rem;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    .form-message--error {
+      color: #ff6b6b;
+    }
+    .form-message--success {
+      color: var(--accent-gold);
+    }
+
+    /* Toggle Links */
+    .login-form__switch {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .login-form__toggle-btn {
+      background: none;
+      border: none;
+      color: var(--accent-gold);
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: 0.25rem;
+      text-decoration: underline;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 900px) {
+      .login-page__inner {
+        flex-direction: column;
+      }
+      .login-page__image {
+        min-height: 380px;
+        padding: 3rem 2rem;
+      }
+      .login-page__image-headline {
+        font-size: 2.6rem;
+      }
+      .login-page__form-container {
+        padding: 3rem 2rem;
+        border-left: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================================================== -->
+  <!-- CUSTOM CURSOR -->
+  <!-- ================================================== -->
+  <div id="cursor" class="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    <span class="cursor-label"></span>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- NAVIGATION -->
+  <!-- ================================================== -->
+  <header id="navbar" class="navbar" role="banner">
+    <div class="navbar__inner">
+      <!-- Logo (Points back to index) -->
+      <a href="../index.html" class="navbar__logo" aria-label="Hotel+ Home">
+        <span class="navbar__logo-text">HOTEL</span><span class="navbar__logo-plus">+</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="navbar__nav" role="navigation" aria-label="Main navigation">
+        <ul class="navbar__links">
+          <li><a href="../index.html#rooms" class="navbar__link" data-cursor="link">ROOMS</a></li>
+          <li><a href="../index.html#experience" class="navbar__link" data-cursor="link">EXPERIENCE</a></li>
+          <li><a href="../index.html#booking" class="navbar__link" data-cursor="link">BOOK</a></li>
+          <li><a href="../index.html#story" class="navbar__link" data-cursor="link">ABOUT</a></li>
+        </ul>
+      </nav>
+
+      <!-- Login (Stays on same page, but acts as a button) -->
+      <a href="#" class="navbar__login" data-cursor="link">
+        <span>LOGIN</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="navbar__toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" data-cursor="link">
+        <span class="navbar__toggle-line"></span>
+        <span class="navbar__toggle-line"></span>
+        <span class="navbar__toggle-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================================================== -->
+  <!-- MOBILE FULLSCREEN MENU -->
+  <!-- ================================================== -->
+  <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation" hidden>
+    <div class="mobile-menu__overlay"></div>
+    <div class="mobile-menu__content">
+      <nav class="mobile-menu__nav">
+        <ul class="mobile-menu__links">
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">01</span>
+            <a href="../index.html#rooms" class="mobile-menu__link">ROOMS</a>
+          </li>
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">02</span>
+            <a href="../index.html#experience" class="mobile-menu__link">EXPERIENCE</a>
+          </li>
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">03</span>
+            <a href="../index.html#booking" class="mobile-menu__link">BOOK</a>
+          </li>
+          <li class="mobile-menu__item">
+            <span class="mobile-menu__number">04</span>
+            <a href="../index.html#story" class="mobile-menu__link">ABOUT</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="mobile-menu__footer">
+        <a href="#" class="mobile-menu__login">LOGIN →</a>
+        <p class="mobile-menu__info">Cebu City, Philippines</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Page Content -->
+  <main class="login-page">
+    <div class="login-page__inner">
+
+      <!-- Left Hero Image Section -->
+      <div class="login-page__image">
+        <img
+          src="../assets/images/hotel/hotel-exterior.png"
+          alt="Hotel+ exterior at night"
+          class="login-page__img"
+        />
+        <div class="login-page__image-overlay"></div>
+        
+        <div class="login-page__image-text">
+          <div class="login-page__location">
+            <span class="location__dot"></span>
+            <span class="location__text">CEBU CITY</span>
+          </div>
+          <h2 class="login-page__image-headline">
+            YOUR<br />STAY<br />AWAITS<span>.</span>
+          </h2>
+          <p class="login-page__image-sub">Experience refined luxury and tailored hospitality in the heart of Cebu.</p>
+        </div>
+      </div>
+
+      <!-- Right Form Container Section -->
+      <div class="login-page__form-container">
+        <div class="login-page__form-inner">
+
+          <!-- Login Form -->
+          <div id="loginForm" class="login-form is-active">
+            <span class="login-form__number">01 / AUTH</span>
+            <h1 class="login-form__title">WELCOME<br />BACK<span class="login-form__dot">.</span></h1>
+            <p class="login-form__subtitle">Sign in to manage your bookings and preferences.</p>
+
+            <form id="loginFormEl" class="login-form__fields" novalidate>
+              <div class="login-form__field">
+                <label for="loginEmail" class="login-form__label">EMAIL</label>
+                <input type="email" id="loginEmail" class="login-form__input" placeholder="user@hotelplus.com" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="loginPassword" class="login-form__label">PASSWORD</label>
+                <input type="password" id="loginPassword" class="login-form__input" placeholder="••••••••" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__options">
+                <label class="login-form__checkbox">
+                  <input type="checkbox" checked />
+                  <span>Remember me</span>
+                </label>
+                <a href="#" class="login-form__forgot">Forgot password?</a>
+              </div>
+
+              <div id="loginMessage" class="form-message"></div>
+
+              <button type="submit" class="btn btn--primary btn--full" data-cursor="cta">
+                <span class="btn__text">SIGN IN</span>
+                <span class="btn__arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </button>
+            </form>
+
+            <p class="login-form__switch">
+              Don't have an account?
+              <button class="login-form__toggle-btn" id="showRegister">Create one</button>
+            </p>
+          </div>
+
+          <!-- Register Form -->
+          <div id="registerForm" class="login-form">
+            <span class="login-form__number">02 / AUTH</span>
+            <h1 class="login-form__title">JOIN<br />HOTEL+<span class="login-form__dot">.</span></h1>
+            <p class="login-form__subtitle">Create your account and start your journey.</p>
+
+            <form id="registerFormEl" class="login-form__fields" novalidate>
+              <div class="login-form__field">
+                <label for="regName" class="login-form__label">FULL NAME</label>
+                <input type="text" id="regName" class="login-form__input" placeholder="Mark Anthony Blanco" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="regEmail" class="login-form__label">EMAIL</label>
+                <input type="email" id="regEmail" class="login-form__input" placeholder="your@email.com" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="regPhone" class="login-form__label">PHONE</label>
+                <input type="tel" id="regPhone" class="login-form__input" placeholder="+63 9XX XXX XXXX" />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div class="login-form__field">
+                <label for="regPassword" class="login-form__label">PASSWORD</label>
+                <input type="password" id="regPassword" class="login-form__input" placeholder="••••••••" required />
+                <div class="login-form__field-line"></div>
+              </div>
+
+              <div id="registerMessage" class="form-message"></div>
+
+              <button type="submit" class="btn btn--primary btn--full" data-cursor="cta">
+                <span class="btn__text">CREATE ACCOUNT</span>
+                <span class="btn__arrow">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </button>
+            </form>
+
+            <p class="login-form__switch">
+              Already have an account?
+              <button class="login-form__toggle-btn" id="showLogin">Sign in</button>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================================================== -->
+  <!-- FOOTER -->
+  <!-- ================================================== -->
+  <footer id="footer" class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <!-- Top row -->
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="footer__logo">HOTEL<span class="footer__logo-plus">+</span></span>
+          <p class="footer__tagline">Stay Different — Cebu City.</p>
+        </div>
+        <div class="footer__nav-group">
+          <div class="footer__nav-col">
+            <h4 class="footer__nav-title">NAVIGATE</h4>
+            <ul class="footer__nav-list">
+              <li><a href="../index.html#hero" class="footer__nav-link">Home</a></li>
+              <li><a href="../index.html#rooms" class="footer__nav-link">Rooms</a></li>
+              <li><a href="../index.html#experience" class="footer__nav-link">Experience</a></li>
+              <li><a href="../index.html#booking" class="footer__nav-link">Book</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-col">
+            <h4 class="footer__nav-title">CONNECT</h4>
+            <ul class="footer__nav-list">
+              <li><a href="#" class="footer__nav-link">Instagram</a></li>
+              <li><a href="#" class="footer__nav-link">Twitter</a></li>
+              <li><a href="#" class="footer__nav-link">Facebook</a></li>
+              <li><a href="#" class="footer__nav-link">LinkedIn</a></li>
+            </ul>
+          </div>
+          <div class="footer__nav-col">
+            <h4 class="footer__nav-title">CONTACT</h4>
+            <ul class="footer__nav-list">
+              <li><a href="mailto:markanthonyblanco20@gmail.com" class="footer__nav-link" data-cursor="link">markanthonyblanco20@gmail.com</a></li>
+              <li><a href="tel:09932034185" class="footer__nav-link" data-cursor="link">+63 993 203 4185</a></li>
+              <li><span class="footer__nav-text">Cebu City, Philippines</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="footer__divider"></div>
+
+      <!-- Bottom row -->
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2024 HOTEL+. All rights reserved.</p>
+        <p class="footer__credit">Developed by Mark Anthony Blanco — Hotel Booking Management System</p>
+        <a href="#navbar" class="footer__back-top" data-cursor="link" aria-label="Back to top">
+          <span>TOP</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Large footer text -->
+    <div class="footer__large-text" aria-hidden="true">
+      <span>HOTEL+</span>
+    </div>
+  </footer>
+
+  <!-- Login Functionality Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var loginForm = document.getElementById('loginForm');
+      var registerForm = document.getElementById('registerForm');
+      var showRegisterBtn = document.getElementById('showRegister');
+      var showLoginBtn = document.getElementById('showLogin');
+
+      /* ---- Toggle Login / Register ---- */
+      if (showRegisterBtn) {
+        showRegisterBtn.addEventListener('click', function () {
+          if (typeof gsap !== 'undefined') {
+            gsap.to(loginForm, {
+              opacity: 0, x: -20, duration: 0.3, onComplete: function () {
+                loginForm.classList.remove('is-active');
+                registerForm.classList.add('is-active');
+                gsap.fromTo(registerForm, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.3 });
+              }
+            });
+          } else {
+            loginForm.classList.remove('is-active');
+            registerForm.classList.add('is-active');
+          }
+        });
+      }
+
+      if (showLoginBtn) {
+        showLoginBtn.addEventListener('click', function () {
+          if (typeof gsap !== 'undefined') {
+            gsap.to(registerForm, {
+              opacity: 0, x: 20, duration: 0.3, onComplete: function () {
+                registerForm.classList.remove('is-active');
+                loginForm.classList.add('is-active');
+                gsap.fromTo(loginForm, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3 });
+              }
+            });
+          } else {
+            registerForm.classList.remove('is-active');
+            loginForm.classList.add('is-active');
+          }
+        });
+      }
+
+      // ---- Redirect target after successful auth (supports ?next=) ----
+      var nextParam = new URLSearchParams(window.location.search).get('next');
+
+      // ---- If already logged in, skip the login page entirely ----
+      if (window.HotelAuth) {
+        HotelAuth.ready.then(function () {
+          if (HotelAuth.isLoggedIn()) {
+            var current = HotelAuth.getCurrentUser();
+            window.location.href = nextParam || (current.role === 'admin' ? 'admin.html' : '../index.html');
+          }
+        });
+      }
+
+      // ---- Login Form Handler ----
+      document.getElementById('loginFormEl').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var email = document.getElementById('loginEmail').value.trim();
+        var password = document.getElementById('loginPassword').value.trim();
+        var messageEl = document.getElementById('loginMessage');
+        var btnText = this.querySelector('.btn__text');
+        var originalBtnText = btnText.textContent;
+
+        messageEl.className = 'form-message';
+        messageEl.textContent = '';
+
+        if (!window.HotelAuth) {
+          messageEl.className = 'form-message form-message--error';
+          messageEl.textContent = 'Authentication is unavailable right now. Please reload the page.';
+          return;
+        }
+
+        btnText.textContent = 'AUTHENTICATING...';
+
+        setTimeout(function () {
+          HotelAuth.login(email, password).then(function (result) {
+            if (!result.success) {
+              btnText.textContent = originalBtnText;
+              messageEl.className = 'form-message form-message--error';
+              messageEl.textContent = result.message;
+              return;
+            }
+
+            messageEl.className = 'form-message form-message--success';
+            messageEl.textContent = 'AUTHENTICATION SUCCESSFUL • REDIRECTING';
+            btnText.textContent = 'WELCOME ✓';
+
+            setTimeout(function () {
+              window.location.href = nextParam || result.redirect;
+            }, 900);
+          }).catch(function () {
+            btnText.textContent = originalBtnText;
+            messageEl.className = 'form-message form-message--error';
+            messageEl.textContent = 'Something went wrong. Please try again.';
+          });
+        }, 600);
+      });
+
+      /* ---- Register Form Handler ---- */
+      document.getElementById('registerFormEl').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var name = document.getElementById('regName').value.trim();
+        var email = document.getElementById('regEmail').value.trim();
+        var password = document.getElementById('regPassword').value.trim();
+        var messageEl = document.getElementById('registerMessage');
+        var btnText = this.querySelector('.btn__text');
+        var originalBtnText = btnText.textContent;
+
+        messageEl.className = 'form-message';
+        messageEl.textContent = '';
+
+        if (!window.HotelAuth) {
+          messageEl.className = 'form-message form-message--error';
+          messageEl.textContent = 'Registration is unavailable right now. Please reload the page.';
+          return;
+        }
+
+        btnText.textContent = 'CREATING ACCOUNT...';
+
+        setTimeout(function () {
+          HotelAuth.register(name, email, password).then(function (result) {
+          if (!result.success) {
+            btnText.textContent = originalBtnText;
+            messageEl.className = 'form-message form-message--error';
+            messageEl.textContent = result.message;
+            return;
+          }
+
+          // Email confirmation required: no session/redirect yet.
+          if (!result.redirect) {
+            messageEl.className = 'form-message form-message--success';
+            messageEl.textContent = result.message || 'Account created! Please check your email to confirm.';
+            btnText.textContent = originalBtnText;
+            return;
+          }
+
+          messageEl.className = 'form-message form-message--success';
+          messageEl.textContent = 'ACCOUNT CREATED • REDIRECTING';
+          btnText.textContent = 'SUCCESS ✓';
+
+          setTimeout(function () {
+            window.location.href = nextParam || result.redirect;
+          }, 900);
+          }).catch(function () {
+            btnText.textContent = originalBtnText;
+            messageEl.className = 'form-message form-message--error';
+            messageEl.textContent = 'Something went wrong. Please try again.';
+          });
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>
