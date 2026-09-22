@@ -1,0 +1,76 @@
+{
+  "rooms": [
+    {
+      "id": "standard",
+      "number": "01",
+      "name": "Standard Room",
+      "type": "STANDARD",
+      "price": 2500,
+      "currency": "₱",
+      "capacity": 2,
+      "size": "28 M²",
+      "bed": "Queen Bed",
+      "image": "../assets/images/rooms/standard-room.png",
+      "description": "A comfortable retreat with all essential amenities for the modern traveler. Clean lines, warm lighting, and thoughtful touches create a space that feels both minimal and inviting.",
+      "amenities": [
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "Flat-screen TV",
+        "Mini Fridge",
+        "Hot Shower",
+        "Room Service"
+      ],
+      "available": true
+    },
+    {
+      "id": "deluxe",
+      "number": "02",
+      "name": "Deluxe Room",
+      "type": "DELUXE",
+      "price": 4500,
+      "currency": "₱",
+      "capacity": 2,
+      "size": "42 M²",
+      "bed": "King Bed",
+      "image": "../assets/images/rooms/deluxe-room.png",
+      "description": "Elevated comfort with panoramic views of Cebu City and curated design details throughout. The Deluxe Room offers a generous living area and premium bathroom fixtures.",
+      "amenities": [
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "55\" Smart TV",
+        "Mini Bar",
+        "Rain Shower",
+        "Room Service",
+        "City View",
+        "Workspace"
+      ],
+      "available": true
+    },
+    {
+      "id": "suite",
+      "number": "03",
+      "name": "Suite Room",
+      "type": "SUITE",
+      "price": 7500,
+      "currency": "₱",
+      "capacity": 4,
+      "size": "65 M²",
+      "bed": "King Bed + Sofa Bed",
+      "image": "../assets/images/rooms/suite-room.png",
+      "description": "The ultimate expression of luxury — a private sanctuary with world-class amenities, a separate living area, and breathtaking views of the Cebu skyline.",
+      "amenities": [
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "65\" Smart TV",
+        "Full Bar",
+        "Jacuzzi Tub",
+        "24/7 Butler",
+        "Skyline View",
+        "Living Room",
+        "Dining Area",
+        "Walk-in Closet"
+      ],
+      "available": true
+    }
+  ]
+}
