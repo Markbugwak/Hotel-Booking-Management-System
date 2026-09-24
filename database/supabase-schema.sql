@@ -99,6 +99,7 @@ create function public.is_admin() returns boolean as $$
 $$ language sql stable security definer;
 
 -- BOOKINGS
+drop policy if exists "anyone can create a booking (guest checkout allowed)" on public.bookings;
 create policy "anyone can create a booking (guest checkout allowed)"
   on public.bookings for insert
   with check (true);

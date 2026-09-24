@@ -59,11 +59,16 @@
   /* ------------------------------------------------ */
   /* SUPABASE-BACKED BOOKING CRUD                     */
   /* ------------------------------------------------ */
+  function createBookingId() {
+    return 'HBS-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+  }
+
   function saveBooking(booking) {
     return supabaseClient.auth.getSession().then(function (sessionRes) {
       var session = sessionRes.data && sessionRes.data.session;
 
       var row = {
+        id: createBookingId(),
         user_id: session ? session.user.id : null,
         guest_name: booking.guestName,
         guest_email: booking.guestEmail,
@@ -77,9 +82,11 @@
         special_requests: booking.specialRequests,
       };
 
-      return supabaseClient.from('bookings').insert(row).select().single();
+      return supabaseClient.from('bookings').insert(row).then(function (res) {
+        if (res.error) throw res.error;
+        return { data: row };
+      });
     }).then(function (res) {
-      if (res.error) throw res.error;
       return mapRow(res.data);
     });
   }

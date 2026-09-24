@@ -96,7 +96,7 @@
         document.getElementById('confTotal').textContent = window.Booking.formatPrice(calc.total);
       }
 
-      if (bookingId && window.Booking) {
+      if (window.Booking) {
         // The row saveBooking() just returned (booking.html) is stashed
         // here — a guest's own booking can't be re-queried from
         // Supabase afterwards, so this avoids depending on that.
@@ -105,13 +105,13 @@
           var raw = sessionStorage.getItem('hbs_last_booking');
           if (raw) {
             var parsed = JSON.parse(raw);
-            if (parsed && parsed.id === bookingId) stashed = parsed;
+            if (parsed && (!bookingId || parsed.id === bookingId)) stashed = parsed;
           }
         } catch (err) { /* ignore */ }
 
         if (stashed) {
           renderBooking(stashed);
-        } else {
+        } else if (bookingId) {
           // Fallback: a signed-in user (or admin) revisiting the link —
           // RLS allows them to read their own booking (or any, if admin).
           window.Booking.getBookingById(bookingId)
@@ -121,6 +121,13 @@
       }
 
       // Animations
+      gsap.set([
+        '.confirm-page__title',
+        '.confirm-page__subtitle',
+        '.confirm-page__details',
+        '.confirm-page__ctas',
+      ], { opacity: 1, y: 0 });
+
       var tl = gsap.timeline({ delay: 0.3 });
 
       tl.from('.confirm-page__check-circle', {
@@ -132,19 +139,7 @@
         strokeDashoffset: 80,
         duration: 0.5,
         ease: 'power2.out',
-      }, '-=0.3')
-      .from('.confirm-page__title', {
-        y: 40, opacity: 0, duration: 0.7, ease: 'power3.out',
-      }, '-=0.3')
-      .from('.confirm-page__subtitle', {
-        y: 20, opacity: 0, duration: 0.5, ease: 'power3.out',
-      }, '-=0.3')
-      .from('.confirm-page__details', {
-        y: 30, opacity: 0, duration: 0.6, ease: 'power3.out',
-      }, '-=0.2')
-      .from('.confirm-page__ctas', {
-        y: 20, opacity: 0, duration: 0.5, ease: 'power3.out',
-      }, '-=0.2');
+      }, '-=0.3');
     });
   </script>
 </body>
