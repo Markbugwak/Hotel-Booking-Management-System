@@ -1283,6 +1283,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-config.js"></script>
   <script src="../js/auth.js"></script>
+  <!-- Booking API: must load before the dashboard calls window.Booking.getBookings() -->
+  <script src="../js/booking.js"></script>
   <script>
     if (window.HotelAuth) { HotelAuth.protectAdminPage(); }
   </script>
@@ -1934,5 +1936,3 @@
   </script>
 </body>
 </html>
-
-can you make this html responsive? 
